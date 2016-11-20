@@ -18,24 +18,4 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
-    /** Called when the user clicks the Send button */
-    public void sendMessage(View view) {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.edit_message);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-
-        File outputFile = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOWNLOADS), "testFile.txt");
-        outputFile.mkdirs();
-        try {
-            FileOutputStream outputStream = new FileOutputStream(outputFile);
-            outputStream.write(message.getBytes());
-            outputStream.close();
-        } catch(Exception e) {
-            return;
-        }
-    }
 }
