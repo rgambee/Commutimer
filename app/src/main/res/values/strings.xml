@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Commutimer</string>
+
+    <!-- Main activity -->
     <string name="new_trip_text">New Trip</string>
+    <string name="most_recent_trip_text">Most Recent</string>
+
+    <!-- New trip activity -->
     <string name="start_trip_text">Start</string>
     <string-array name="dummy_trip_presets">
         <item>87 Inbound</item>
