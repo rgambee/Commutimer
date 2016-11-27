@@ -9,4 +9,9 @@
         <item>77 Outbound</item>
         <item>RL Inbound</item>
     </string-array>
+    <string-array name="leg_types">
+        <item>Foot</item>
+        <item>Bus</item>
+        <item>Subway</item>
+    </string-array>
 </resources>
