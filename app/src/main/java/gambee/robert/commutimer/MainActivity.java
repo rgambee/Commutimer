@@ -18,4 +18,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+
+    public void openNewTrip(View view) {
+        Intent intent = new Intent(this, NewTripActivity.class);
+        startActivity(intent);
+    }
 }
