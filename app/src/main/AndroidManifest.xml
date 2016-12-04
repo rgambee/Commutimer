@@ -21,6 +21,9 @@
         <activity
             android:name=".NewTripActivity">
         </activity>
+        <activity
+            android:name=".TravelingActivity">
+        </activity>
     </application>
 
 </manifest>

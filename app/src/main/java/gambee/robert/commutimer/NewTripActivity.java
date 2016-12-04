@@ -1,7 +1,9 @@
 package gambee.robert.commutimer;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -22,5 +24,10 @@ public class NewTripActivity extends AppCompatActivity {
                 R.array.leg_types, android.R.layout.simple_spinner_item);
         leg1TypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         leg1TypeSpinner.setAdapter(leg1TypeAdapter);
+    }
+
+    public void startNewTrip(View view) {
+        Intent intent = new Intent(this, TravelingActivity.class);
+        startActivity(intent);
     }
 }
