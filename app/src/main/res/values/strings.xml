@@ -23,4 +23,5 @@
 
     <!-- Traveling activity -->
     <string name="go_text">GO!</string>
+    <string name="total_timer_label">Total Time:</string>
 </resources>
