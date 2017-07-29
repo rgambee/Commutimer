@@ -21,6 +21,7 @@
         <item>Subway</item>
         <item>Other</item>
     </string-array>
+    <string name="new_leg_text">New Leg</string>
 
     <!-- Traveling activity -->
     <string name="go_text">GO!</string>
