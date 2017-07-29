@@ -19,6 +19,7 @@
         <item>Foot</item>
         <item>Bus</item>
         <item>Subway</item>
+        <item>Other</item>
     </string-array>
 
     <!-- Traveling activity -->
