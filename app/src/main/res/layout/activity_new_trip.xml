@@ -48,7 +48,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Menu"
             android:text="@string/leg_type_text"/>
         <Spinner
             android:id="@+id/leg1_type_spinner"
