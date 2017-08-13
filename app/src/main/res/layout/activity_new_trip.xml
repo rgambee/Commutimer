@@ -48,7 +48,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:text="@string/new_leg_text"
             android:onClick="addNewLeg"/>

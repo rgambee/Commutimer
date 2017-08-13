@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -34,12 +35,16 @@ public class NewTripActivity extends AppCompatActivity {
         TextView legLabel = new TextView(this);
         legLabel.setText(String.format(Locale.US, "Leg %d", legNumber));
         legLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Large);
-        legListLayout.addView(legLabel);
 
         LinearLayout legTypeLayout = new LinearLayout(this);
         legTypeLayout.setOrientation(LinearLayout.HORIZONTAL);
-        //noinspection ResourceType
-        legTypeLayout.setLeft(R.dimen.activity_horizontal_margin);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(getResources().getDimensionPixelOffset(R.dimen.activity_horizontal_margin),
+                          0, 0,
+                          getResources().getDimensionPixelOffset(R.dimen.activity_vertical_margin));
+        legTypeLayout.setLayoutParams(params);
 
         TextView legTypeLabel = new TextView(this);
         legTypeLabel.setText(R.string.leg_type_text);
@@ -53,6 +58,7 @@ public class NewTripActivity extends AppCompatActivity {
         legTypeLayout.addView(legTypeLabel);
         legTypeLayout.addView(legTypeSpinner);
 
+        legListLayout.addView(legLabel);
         legListLayout.addView(legTypeLayout);
         legNumber++;
     }
