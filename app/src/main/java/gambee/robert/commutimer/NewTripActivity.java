@@ -13,8 +13,8 @@ import android.widget.TextView;
 import java.util.Locale;
 
 public class NewTripActivity extends AppCompatActivity {
-    int legNumber = 1;
-    LinearLayout legListLayout;
+    private int legNumber = 1;
+    private LinearLayout legListLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
