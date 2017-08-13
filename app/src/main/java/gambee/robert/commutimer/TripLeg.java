@@ -2,12 +2,14 @@ package gambee.robert.commutimer;
 
 import org.json.JSONObject;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 public class TripLeg {
     private String legType = "";
-    private ZonedDateTime startTime;
-    private ZonedDateTime endTime;
+    private ZonedDateTime startTime = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
+    private ZonedDateTime endTime = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
 
     public TripLeg() {}
 
