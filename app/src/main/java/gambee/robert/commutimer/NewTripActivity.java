@@ -10,11 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class NewTripActivity extends AppCompatActivity {
     private int legNumber = 1;
     private LinearLayout legListLayout;
+    private ArrayList<Spinner> legSpinnerList = new ArrayList<Spinner>(3);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class NewTripActivity extends AppCompatActivity {
                 R.array.leg_types, android.R.layout.simple_spinner_item);
         legTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         legTypeSpinner.setAdapter(legTypeAdapter);
+        legSpinnerList.add(legTypeSpinner);
         legTypeLayout.addView(legTypeLabel);
         legTypeLayout.addView(legTypeSpinner);
 
