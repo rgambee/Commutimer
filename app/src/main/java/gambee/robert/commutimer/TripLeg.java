@@ -2,15 +2,18 @@ package gambee.robert.commutimer;
 
 import org.json.JSONObject;
 
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
+import java.time.ZonedDateTime;
 
 public class TripLeg {
     private String legType = "";
-    private GregorianCalendar startTime = new GregorianCalendar(TimeZone.getDefault());
-    private GregorianCalendar endTime = new GregorianCalendar(TimeZone.getDefault());
+    private ZonedDateTime startTime;
+    private ZonedDateTime endTime;
 
     public TripLeg() {}
+
+    public TripLeg(String legType) {
+        this.legType = legType;
+    }
 
     public String getLegType() {
         return legType;
@@ -21,20 +24,20 @@ public class TripLeg {
         return true;
     }
 
-    public GregorianCalendar getStartTime() {
+    public ZonedDateTime getStartTime() {
         return startTime;
     }
 
-    public boolean setStartTime(GregorianCalendar newStartTime) {
+    public boolean setStartTime(ZonedDateTime newStartTime) {
         startTime = newStartTime;
         return true;
     }
 
-    public GregorianCalendar getEndTime() {
+    public ZonedDateTime getEndTime() {
         return endTime;
     }
 
-    public boolean setEndTime(GregorianCalendar newEndTime) {
+    public boolean setEndTime(ZonedDateTime newEndTime) {
         endTime = newEndTime;
         return true;
     }
