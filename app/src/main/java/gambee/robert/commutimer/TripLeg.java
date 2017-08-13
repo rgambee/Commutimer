@@ -42,7 +42,11 @@ public class TripLeg {
         return true;
     }
 
-    public JSONObject toJson() {
-        return new JSONObject();
+    public JSONObject toJson() throws org.json.JSONException {
+        JSONObject json = new JSONObject();
+        json.put("LegType", legType);
+        json.put("StartTime", startTime.toString());
+        json.put("EndTime", endTime.toString());
+        return json;
     }
 }
