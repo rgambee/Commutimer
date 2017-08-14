@@ -18,6 +18,16 @@ public class TripLeg {
         this.legType = legType;
     }
 
+    public TripLeg(JSONObject json) throws JSONException {
+        String lt = json.getString("LegType");
+        String startTimeString = json.getString("StartTime");
+        String endTimeString = json.getString("EndTime");
+
+        legType = lt;
+        startTime = ZonedDateTime.parse(startTimeString);
+        endTime = ZonedDateTime.parse(endTimeString);
+    }
+
     public String getLegType() {
         return legType;
     }
