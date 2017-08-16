@@ -3,14 +3,14 @@ package gambee.robert.commutimer;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TripLeg {
     private String legType = "";
-    private ZonedDateTime startTime = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
-    private ZonedDateTime endTime = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
+    private Date startTime = new Date(0);
+    private Date endTime = new Date(0);
 
     public TripLeg() {}
 
@@ -24,8 +24,10 @@ public class TripLeg {
         String endTimeString = json.getString("EndTime");
 
         legType = lt;
-        startTime = ZonedDateTime.parse(startTimeString);
-        endTime = ZonedDateTime.parse(endTimeString);
+        startTime = SimpleDateFormat.getDateTimeInstance().parse(startTimeString,
+                                                                 new ParsePosition(0));
+        endTime = SimpleDateFormat.getDateTimeInstance().parse(endTimeString,
+                                                               new ParsePosition(0));
     }
 
     public String getLegType() {
@@ -37,20 +39,20 @@ public class TripLeg {
         return true;
     }
 
-    public ZonedDateTime getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public boolean setStartTime(ZonedDateTime newStartTime) {
+    public boolean setStartTime(Date newStartTime) {
         startTime = newStartTime;
         return true;
     }
 
-    public ZonedDateTime getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public boolean setEndTime(ZonedDateTime newEndTime) {
+    public boolean setEndTime(Date newEndTime) {
         endTime = newEndTime;
         return true;
     }
@@ -58,8 +60,8 @@ public class TripLeg {
     public JSONObject toJson() throws org.json.JSONException {
         JSONObject json = new JSONObject();
         json.put("LegType", legType);
-        json.put("StartTime", startTime.toString());
-        json.put("EndTime", endTime.toString());
+        json.put("StartTime", SimpleDateFormat.getDateTimeInstance().format(startTime));
+        json.put("EndTime", SimpleDateFormat.getDateTimeInstance().format(endTime));
         return json;
     }
 }
