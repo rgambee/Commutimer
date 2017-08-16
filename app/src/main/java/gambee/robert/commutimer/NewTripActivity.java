@@ -3,12 +3,16 @@ package gambee.robert.commutimer;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -67,7 +71,24 @@ public class NewTripActivity extends AppCompatActivity {
     }
 
     public void startNewTrip(View view) {
+        try {
+            parseLegs();
+        }
+        catch (JSONException ex) {
+            Log.e("myError", ex.toString());
+        }
+
         Intent intent = new Intent(this, TravelingActivity.class);
         startActivity(intent);
+    }
+
+    private void parseLegs() throws JSONException {
+        ArrayList<TripLeg> legs = new ArrayList<TripLeg>(legSpinnerList.size());
+        for (Spinner legTypeSpinner : legSpinnerList) {
+            String legType = (String) legTypeSpinner.getSelectedItem();
+            legs.add(new TripLeg(legType));
+        }
+        Trip t = new Trip(legs);
+        JSONObject json = t.toJson();
     }
 }
