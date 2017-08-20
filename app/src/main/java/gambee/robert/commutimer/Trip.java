@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Trip implements Parcelable {
     private ArrayList<TripLeg> legList = new ArrayList<TripLeg>(3);
@@ -38,6 +39,14 @@ public class Trip implements Parcelable {
 
     public void addLegAt(int index, TripLeg leg) {
         legList.add(index, leg);
+    }
+
+    public int getSize() {
+        return legList.size();
+    }
+
+    public Iterator<TripLeg> iterLegs() {
+        return legList.iterator();
     }
 
     public JSONObject toJson() throws JSONException {
