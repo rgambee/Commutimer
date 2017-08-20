@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class NewTripActivity extends AppCompatActivity {
-    private int legNumber = 1;
+    private int legNumber = 0;
     private LinearLayout legListLayout;
     private ArrayList<Spinner> legSpinnerList = new ArrayList<Spinner>(3);
 
