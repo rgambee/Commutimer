@@ -1,13 +1,17 @@
 package gambee.robert.commutimer;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Trip {
+public class Trip implements Parcelable {
     private ArrayList<TripLeg> legList = new ArrayList<TripLeg>(3);
+    private static Trip.Creator CREATOR;
 
     public Trip() {}
 
@@ -27,5 +31,14 @@ public class Trip {
         JSONObject json = new JSONObject();
        json.put("Legs", new JSONArray(legList));
         return json;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel var1, int var2) {
     }
 }
