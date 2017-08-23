@@ -15,6 +15,15 @@ public class Trip {
         legList = legs;
     }
 
+    public Trip(JSONObject json) throws JSONException {
+        JSONArray legs = json.getJSONArray("Legs");
+        ArrayList<TripLeg> list = new ArrayList<TripLeg>(legs.length());
+        for (int i = 0; i < legs.length(); ++i) {
+            list.add((TripLeg) legs.get(i));
+        }
+        legList = list;
+    }
+
     public void addLeg(TripLeg leg) {
         legList.add(leg);
     }
@@ -25,7 +34,7 @@ public class Trip {
 
     public JSONObject toJson() throws JSONException {
         JSONObject json = new JSONObject();
-       json.put("Legs", new JSONArray(legList));
+        json.put("Legs", new JSONArray(legList));
         return json;
     }
 }
