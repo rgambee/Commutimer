@@ -70,14 +70,16 @@ public class NewTripActivity extends AppCompatActivity {
     }
 
     public void startNewTrip(View view) {
+        Trip trip = new Trip();
         try {
-            parseLegs();
+            trip = parseLegs();
         }
         catch (JSONException ex) {
             Log.e("myError", ex.toString());
         }
 
         Intent intent = new Intent(this, TravelingActivity.class);
+        intent.putExtra("TripParcel", trip);
         startActivity(intent);
     }
 
