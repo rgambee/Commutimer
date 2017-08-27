@@ -12,7 +12,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -82,13 +81,12 @@ public class NewTripActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void parseLegs() throws JSONException {
-        ArrayList<TripLeg> legs = new ArrayList<TripLeg>(legSpinnerList.size());
+    private Trip parseLegs() throws JSONException {
+        Trip trip = new Trip();
         for (Spinner legTypeSpinner : legSpinnerList) {
             String legType = (String) legTypeSpinner.getSelectedItem();
-            legs.add(new TripLeg(legType));
+            trip.addLeg(new TripLeg(legType));
         }
-        Trip t = new Trip(legs);
-        JSONObject json = t.toJson();
+        return trip;
     }
 }
