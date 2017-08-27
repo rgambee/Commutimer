@@ -24,7 +24,7 @@ public class Trip implements Parcelable {
         JSONArray legs = json.getJSONArray("Legs");
         ArrayList<TripLeg> list = new ArrayList<TripLeg>(legs.length());
         for (int i = 0; i < legs.length(); ++i) {
-            list.add((TripLeg) legs.get(i));
+            list.add(new TripLeg((JSONObject) legs.get(i)));
         }
         legList = list;
     }
@@ -51,7 +51,13 @@ public class Trip implements Parcelable {
 
     public JSONObject toJson() throws JSONException {
         JSONObject json = new JSONObject();
-        json.put("Legs", new JSONArray(legList));
+        JSONArray legs = new JSONArray();
+        Iterator<TripLeg> iter = iterLegs();
+        while (iter.hasNext()) {
+            TripLeg tl = iter.next();
+            legs.put(tl.toJson());
+        }
+        json.put("Legs", legs);
         return json;
     }
 
