@@ -18,6 +18,7 @@ import java.util.Locale;
 public class TravelingActivity extends AppCompatActivity {
     private LinearLayout legListLayout;
     private ArrayList<Chronometer> legTimers = new ArrayList<Chronometer>(3);
+    private int activeLeg = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +62,25 @@ public class TravelingActivity extends AppCompatActivity {
     }
 
     public void beginTraveling(View view) {
-        long tripStartTime = System.currentTimeMillis();
-        Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
-        timer.start();
+        if (activeLeg < 0) {
+            Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
+            timer.start();
+
+            Button b = (Button) findViewById(R.id.traveling_button);
+            b.setText("Next Leg");
+        }
+
+        if (activeLeg < legTimers.size()) {
+            if (activeLeg >= 0) {
+                legTimers.get(activeLeg).stop();
+            }
+            ++activeLeg;
+            if (activeLeg < legTimers.size()) {
+                legTimers.get(activeLeg).start();
+            } else {
+                Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
+                timer.stop();
+            }
+        }
     }
 }
