@@ -18,7 +18,6 @@ import java.util.Locale;
 
 public class TravelingActivity extends AppCompatActivity {
     Trip trip = new Trip();
-    private LinearLayout legListLayout;
     private ArrayList<Chronometer> legTimers = new ArrayList<Chronometer>(3);
     private int activeLeg = -1;
 
@@ -30,7 +29,7 @@ public class TravelingActivity extends AppCompatActivity {
         Intent intent = getIntent();
         trip = (Trip) intent.getParcelableExtra("TripParcel");
 
-        legListLayout = (LinearLayout) findViewById(R.id.traveling_leg_list_layout);
+        LinearLayout legListLayout = (LinearLayout) findViewById(R.id.traveling_leg_list_layout);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
