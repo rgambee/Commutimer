@@ -1,6 +1,7 @@
 package gambee.robert.commutimer;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,6 +66,7 @@ public class TravelingActivity extends AppCompatActivity {
     public void beginTraveling(View view) {
         if (activeLeg < 0) {
             Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
+            timer.setBase(SystemClock.elapsedRealtime());
             timer.start();
 
             Button b = (Button) findViewById(R.id.traveling_button);
@@ -79,7 +81,9 @@ public class TravelingActivity extends AppCompatActivity {
             ++activeLeg;
             if (activeLeg < legTimers.size()) {
                 trip.getLeg(activeLeg).setStartTime(new Date());
-                legTimers.get(activeLeg).start();
+                Chronometer timer = legTimers.get(activeLeg);
+                timer.setBase(SystemClock.elapsedRealtime());
+                timer.start();
             } else {
                 Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
                 timer.stop();
