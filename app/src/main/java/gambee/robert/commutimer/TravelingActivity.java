@@ -12,10 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
 public class TravelingActivity extends AppCompatActivity {
+    Trip trip = new Trip();
     private LinearLayout legListLayout;
     private ArrayList<Chronometer> legTimers = new ArrayList<Chronometer>(3);
     private int activeLeg = -1;
@@ -26,7 +28,7 @@ public class TravelingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_traveling);
 
         Intent intent = getIntent();
-        Trip trip = (Trip) intent.getParcelableExtra("TripParcel");
+        trip = (Trip) intent.getParcelableExtra("TripParcel");
 
         legListLayout = (LinearLayout) findViewById(R.id.traveling_leg_list_layout);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -72,10 +74,12 @@ public class TravelingActivity extends AppCompatActivity {
 
         if (activeLeg < legTimers.size()) {
             if (activeLeg >= 0) {
+                trip.getLeg(activeLeg).setEndTime(new Date());
                 legTimers.get(activeLeg).stop();
             }
             ++activeLeg;
             if (activeLeg < legTimers.size()) {
+                trip.getLeg(activeLeg).setStartTime(new Date());
                 legTimers.get(activeLeg).start();
             } else {
                 Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
