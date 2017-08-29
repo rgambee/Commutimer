@@ -41,6 +41,10 @@ public class Trip implements Parcelable {
         legList.add(index, leg);
     }
 
+    public TripLeg getLeg(int index) {
+        return legList.get(index);
+    }
+
     public int getSize() {
         return legList.size();
     }
