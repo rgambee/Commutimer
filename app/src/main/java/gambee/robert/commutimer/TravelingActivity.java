@@ -64,12 +64,11 @@ public class TravelingActivity extends AppCompatActivity {
     }
 
     public void beginTraveling(View view) {
+        Button b = (Button) findViewById(R.id.traveling_button);
         if (activeLeg < 0) {
             Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
             timer.setBase(SystemClock.elapsedRealtime());
             timer.start();
-
-            Button b = (Button) findViewById(R.id.traveling_button);
             b.setText("Next Leg");
         }
 
@@ -79,6 +78,9 @@ public class TravelingActivity extends AppCompatActivity {
                 legTimers.get(activeLeg).stop();
             }
             ++activeLeg;
+            if (activeLeg == legTimers.size() - 1) {
+                b.setText("End");
+            }
             if (activeLeg < legTimers.size()) {
                 trip.getLeg(activeLeg).setStartTime(new Date());
                 Chronometer timer = legTimers.get(activeLeg);
@@ -87,6 +89,7 @@ public class TravelingActivity extends AppCompatActivity {
             } else {
                 Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
                 timer.stop();
+                b.setEnabled(false);
             }
         }
     }
