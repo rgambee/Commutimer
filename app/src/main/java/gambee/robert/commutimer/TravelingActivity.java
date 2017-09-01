@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,9 +32,22 @@ public class TravelingActivity extends AppCompatActivity {
         trip = (Trip) intent.getParcelableExtra("TripParcel");
 
         LinearLayout legListLayout = (LinearLayout) findViewById(R.id.traveling_leg_list_layout);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams legLayoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams legLabelParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        legLabelParams.setMargins(
+                getResources().getDimensionPixelOffset(R.dimen.activity_horizontal_margin),
+                0, 0,
+                getResources().getDimensionPixelOffset(R.dimen.activity_horizontal_margin));
+        LinearLayout.LayoutParams timerParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        timerParams.setMargins(
+                0, 0,
+                getResources().getDimensionPixelOffset(R.dimen.activity_horizontal_margin), 0);
         int legNumber = 0;
         Iterator<TripLeg> legIter = trip.iterLegs();
         while (legIter.hasNext()) {
@@ -41,22 +55,26 @@ public class TravelingActivity extends AppCompatActivity {
             Log.d("CommutimerDebug", t.getLegType());
             LinearLayout legLayout = new LinearLayout(this);
             legLayout.setOrientation(LinearLayout.HORIZONTAL);
-            legLayout.setLayoutParams(params);
+            legLayout.setLayoutParams(legLayoutParams);
 
             TextView legLabel = new TextView(this);
+            legLabel.setLayoutParams(legLabelParams);
             legLabel.setText(String.format(Locale.US, "Leg %d", legNumber));
             legLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Large);
 
             TextView legTypeLabel = new TextView(this);
+            legTypeLabel.setLayoutParams(legLabelParams);
             legTypeLabel.setText(t.getLegType());
             legTypeLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
 
-            Chronometer chron = new Chronometer(this);
-            legTimers.add(chron);
+            Chronometer timer = new Chronometer(this);
+            timer.setLayoutParams(timerParams);
+            legTimers.add(timer);
+            timer.setGravity(Gravity.END);
 
             legLayout.addView(legLabel);
             legLayout.addView(legTypeLabel);
-            legLayout.addView(chron);
+            legLayout.addView(timer);
             legListLayout.addView(legLayout);
 
             ++legNumber;
