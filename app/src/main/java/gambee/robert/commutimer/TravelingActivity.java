@@ -107,7 +107,14 @@ public class TravelingActivity extends AppCompatActivity {
             } else {
                 Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
                 timer.stop();
-                b.setEnabled(false);
+                b.setText("Continue");
+                b.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(), EditTripActivity.class);
+                        intent.putExtra("TripParcel", trip);
+                        startActivity(intent);
+                    }
+                });
             }
         }
     }
