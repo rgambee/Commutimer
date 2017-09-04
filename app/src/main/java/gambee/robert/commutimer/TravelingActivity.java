@@ -13,6 +13,8 @@ import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -21,7 +23,8 @@ import java.util.Locale;
 public class TravelingActivity extends AppCompatActivity {
     Trip trip = new Trip();
     private ArrayList<Chronometer> legTimers = new ArrayList<Chronometer>(3);
-    private int activeLeg = -1;
+    private int currentLeg = -1;
+    private boolean currentLegIsActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,38 +86,46 @@ public class TravelingActivity extends AppCompatActivity {
 
     public void beginTraveling(View view) {
         Button b = (Button) findViewById(R.id.traveling_button);
-        if (activeLeg < 0) {
+        if (currentLeg < 0) {
             Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
             timer.setBase(SystemClock.elapsedRealtime());
             timer.start();
-            b.setText("Next Leg");
+            ++currentLeg;
         }
 
-        if (activeLeg < legTimers.size()) {
-            if (activeLeg >= 0) {
-                trip.getLeg(activeLeg).setEndTime(new Date());
-                legTimers.get(activeLeg).stop();
-            }
-            ++activeLeg;
-            if (activeLeg == legTimers.size() - 1) {
-                b.setText("End");
-            }
-            if (activeLeg < legTimers.size()) {
-                trip.getLeg(activeLeg).setStartTime(new Date());
-                Chronometer timer = legTimers.get(activeLeg);
+        if (currentLeg < trip.getSize()) {
+            if (!currentLegIsActive) {
+                trip.getLeg(currentLeg).setStartTime(new Date());
+                Chronometer timer = legTimers.get(currentLeg);
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
+                currentLegIsActive = true;
+                b.setText("End Leg");
             } else {
-                Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
-                timer.stop();
-                b.setText("Continue");
-                b.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getApplicationContext(), EditTripActivity.class);
-                        intent.putExtra("TripParcel", trip);
-                        startActivity(intent);
-                    }
-                });
+                trip.getLeg(currentLeg).setEndTime(new Date());
+                legTimers.get(currentLeg).stop();
+                ++currentLeg;
+                currentLegIsActive = false;
+                if (currentLeg < trip.getSize()) {
+                    b.setText("Start Leg");
+                } else {
+                    Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
+                    timer.stop();
+                    b.setText("Continue");
+                    b.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            try {
+                                Log.d("CommutimerDebug", trip.toJson().toString());
+                            } catch (JSONException ex) {
+                                Log.e("CommutimerError", ex.toString());
+                            }
+                            Intent intent = new Intent(TravelingActivity.this,
+                                                       EditTripActivity.class);
+                            intent.putExtra("TripParcel", trip);
+                            startActivity(intent);
+                        }
+                    });
+                }
             }
         }
     }
