@@ -3,6 +3,7 @@ package gambee.robert.commutimer;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,6 +13,9 @@ public class TripLeg {
     private String legType = "";
     private Date startTime = new Date(0);
     private Date endTime = new Date(0);
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+            Locale.US);
 
     public TripLeg() {}
 
@@ -19,16 +23,14 @@ public class TripLeg {
         this.legType = legType;
     }
 
-    public TripLeg(JSONObject json) throws JSONException {
+    public TripLeg(JSONObject json) throws JSONException, ParseException {
         String lt = json.getString("LegType");
         String startTimeString = json.getString("StartTime");
         String endTimeString = json.getString("EndTime");
 
         legType = lt;
-        startTime = SimpleDateFormat.getDateTimeInstance().parse(startTimeString,
-                                                                 new ParsePosition(0));
-        endTime = SimpleDateFormat.getDateTimeInstance().parse(endTimeString,
-                                                               new ParsePosition(0));
+        startTime = stringToDate(startTimeString);
+        endTime = stringToDate(endTimeString);
     }
 
     public String getLegType() {
@@ -75,8 +77,10 @@ public class TripLeg {
     }
 
     private String dateToString(Date d) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-                Locale.US);
         return dateFormat.format(d);
+    }
+
+    private Date stringToDate(String s) throws ParseException {
+        return dateFormat.parse(s);
     }
 }

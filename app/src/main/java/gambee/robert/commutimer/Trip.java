@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -20,7 +21,7 @@ public class Trip implements Parcelable {
         legList = legs;
     }
 
-    public Trip(JSONObject json) throws JSONException {
+    public Trip(JSONObject json) throws JSONException, ParseException {
         JSONArray legs = json.getJSONArray("Legs");
         ArrayList<TripLeg> list = new ArrayList<TripLeg>(legs.length());
         for (int i = 0; i < legs.length(); ++i) {
@@ -29,7 +30,7 @@ public class Trip implements Parcelable {
         legList = list;
     }
 
-    public Trip(Parcel parcel) throws JSONException {
+    public Trip(Parcel parcel) throws JSONException, ParseException {
             this(new JSONObject(parcel.readString()));
     }
 
@@ -88,7 +89,7 @@ public class Trip implements Parcelable {
             try {
                 return new Trip(parcel);
             }
-            catch (JSONException ex) {
+            catch (JSONException | ParseException ex) {
                 Log.e("CommutimerError", ex.toString());
                 return new Trip();
             }
