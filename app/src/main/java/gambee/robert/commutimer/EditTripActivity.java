@@ -27,8 +27,9 @@ public class EditTripActivity extends AppCompatActivity {
 
     public void saveTrip(View view) {
         String fileName = "Trip_" + trip.getLeg(0).getStartTimeString() + ".json";
-        File file = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), fileName);
+        File file = new File(new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS), "Commutimer Trips"),
+                fileName);
         file.getParentFile().mkdirs();
         try {
             FileOutputStream fos = new FileOutputStream(file);
