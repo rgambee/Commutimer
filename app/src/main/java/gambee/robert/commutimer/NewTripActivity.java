@@ -70,20 +70,13 @@ public class NewTripActivity extends AppCompatActivity {
     }
 
     public void startNewTrip(View view) {
-        Trip trip = new Trip();
-        try {
-            trip = parseLegs();
-        }
-        catch (JSONException ex) {
-            Log.e("myError", ex.toString());
-        }
-
+        Trip trip = parseLegs();
         Intent intent = new Intent(this, TravelingActivity.class);
         intent.putExtra("TripParcel", trip);
         startActivity(intent);
     }
 
-    private Trip parseLegs() throws JSONException {
+    private Trip parseLegs() {
         Trip trip = new Trip();
         for (Spinner legTypeSpinner : legSpinnerList) {
             String legType = (String) legTypeSpinner.getSelectedItem();
