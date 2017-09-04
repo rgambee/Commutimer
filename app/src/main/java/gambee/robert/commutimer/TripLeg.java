@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class TripLeg {
     private String legType = "";
@@ -43,6 +44,10 @@ public class TripLeg {
         return startTime;
     }
 
+    public String getStartTimeString() {
+        return dateToString(startTime);
+    }
+
     public boolean setStartTime(Date newStartTime) {
         startTime = newStartTime;
         return true;
@@ -50,6 +55,10 @@ public class TripLeg {
 
     public Date getEndTime() {
         return endTime;
+    }
+
+    public String getEndTimeString() {
+        return dateToString(endTime);
     }
 
     public boolean setEndTime(Date newEndTime) {
@@ -60,8 +69,14 @@ public class TripLeg {
     public JSONObject toJson() throws org.json.JSONException {
         JSONObject json = new JSONObject();
         json.put("LegType", legType);
-        json.put("StartTime", SimpleDateFormat.getDateTimeInstance().format(startTime));
-        json.put("EndTime", SimpleDateFormat.getDateTimeInstance().format(endTime));
+        json.put("StartTime", getStartTimeString());
+        json.put("EndTime", getEndTimeString());
         return json;
+    }
+
+    private String dateToString(Date d) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                Locale.US);
+        return dateFormat.format(d);
     }
 }
