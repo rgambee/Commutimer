@@ -32,7 +32,7 @@ public class EditTripActivity extends AppCompatActivity {
         file.getParentFile().mkdirs();
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            fos.write(trip.toJson().toString(4).getBytes());
+            fos.write(trip.toJson().toString(4).getBytes("UTF-8"));
             fos.close();
         }
         catch (JSONException | IOException ex) {
