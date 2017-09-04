@@ -12,6 +12,8 @@ import org.json.JSONException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class EditTripActivity extends AppCompatActivity {
     Trip trip = new Trip();
@@ -26,7 +28,9 @@ public class EditTripActivity extends AppCompatActivity {
     }
 
     public void saveTrip(View view) {
-        String fileName = "Trip_" + trip.getLeg(0).getStartTimeString() + ".json";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss",
+                                                           Locale.US);
+        String fileName = "Trip_" + dateFormat.format(trip.getLeg(0).getStartTime()) + ".json";
         File file = new File(new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOCUMENTS), "Commutimer Trips"),
                 fileName);
