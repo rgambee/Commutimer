@@ -32,7 +32,7 @@ public class TravelingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_traveling);
 
         Intent intent = getIntent();
-        trip = (Trip) intent.getParcelableExtra("TripParcel");
+        trip = intent.getParcelableExtra("TripParcel");
 
         LinearLayout legListLayout = (LinearLayout) findViewById(R.id.traveling_leg_list_layout);
         LinearLayout.LayoutParams legLayoutParams = new LinearLayout.LayoutParams(
