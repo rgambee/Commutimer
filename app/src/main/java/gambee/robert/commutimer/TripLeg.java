@@ -10,9 +10,13 @@ import java.util.Date;
 import java.util.Locale;
 
 public class TripLeg {
-    private String legType = "";
     private Date startTime = new Date(0);
     private Date endTime = new Date(0);
+    private String legType = "";
+    private String route = "";
+    private String routeDirection = "";
+    private String source = "";
+    private String destination = "";
     private static SimpleDateFormat dateFormat = new SimpleDateFormat(
             "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
             Locale.US);
@@ -21,6 +25,15 @@ public class TripLeg {
 
     public TripLeg(String legType) {
         this.legType = legType;
+    }
+
+    public TripLeg(String legType, String route, String routeDirection,
+                   String source, String destination) {
+        this.legType = legType;
+        this.route = route;
+        this.routeDirection = routeDirection;
+        this.source = source;
+        this.destination = destination;
     }
 
     public TripLeg(JSONObject json) throws JSONException, ParseException {
