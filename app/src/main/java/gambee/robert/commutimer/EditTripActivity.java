@@ -26,7 +26,7 @@ public class EditTripActivity extends AppCompatActivity {
     }
 
     public void saveTrip(View view) {
-        String fileName = "Trip_" + trip.getLeg(0).getStartTime().toString() + ".txt";
+        String fileName = "Trip_" + trip.getLeg(0).getStartTimeString() + ".json";
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOCUMENTS), fileName);
         file.getParentFile().mkdirs();
