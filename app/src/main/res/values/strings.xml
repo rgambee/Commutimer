@@ -23,8 +23,18 @@
         <item>Other</item>
     </string-array>
     <string name="new_leg_text">New Leg</string>
+    <string name="leg_label">Leg %d</string>
 
     <!-- Traveling activity -->
-    <string name="go_text">GO!</string>
     <string name="total_timer_label">Total Time:</string>
+    <string name="button_go">GO!</string>
+    <string name="button_start_leg">Start Leg</string>
+    <string name="button_end_leg">End Leg</string>
+    <string name="button_continue">Continue</string>
+
+    <!-- Edit trip activity -->
+    <string name="trip_save_directory">Commutimer Trips</string>
+    <string name="trip_filename_prefix">Trip_</string>
+    <string name="trip_filename_extension">.json</string>
+    <string name="button_save">Save</string>
 </resources>

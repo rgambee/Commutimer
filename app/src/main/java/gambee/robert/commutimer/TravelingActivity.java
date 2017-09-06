@@ -60,7 +60,7 @@ public class TravelingActivity extends AppCompatActivity {
 
             TextView legLabel = new TextView(this);
             legLabel.setLayoutParams(legLabelParams);
-            legLabel.setText(String.format(Locale.US, "Leg %d", legNumber));
+            legLabel.setText(getString(R.string.leg_label, legNumber));
             legLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Large);
 
             TextView legTypeLabel = new TextView(this);
@@ -98,18 +98,18 @@ public class TravelingActivity extends AppCompatActivity {
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
                 currentLegIsActive = true;
-                b.setText("End Leg");
+                b.setText(getString(R.string.button_end_leg));
             } else {
                 trip.getLeg(currentLeg).setEndTime(new Date());
                 legTimers.get(currentLeg).stop();
                 ++currentLeg;
                 currentLegIsActive = false;
                 if (currentLeg < trip.getSize()) {
-                    b.setText("Start Leg");
+                    b.setText(getString(R.string.button_start_leg));
                 } else {
                     Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
                     timer.stop();
-                    b.setText("Continue");
+                    b.setText(getString(R.string.button_continue));
                     b.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View view) {
                             Intent intent = new Intent(TravelingActivity.this,

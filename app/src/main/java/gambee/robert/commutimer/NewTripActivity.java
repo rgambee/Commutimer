@@ -37,7 +37,7 @@ public class NewTripActivity extends AppCompatActivity {
 
     public void addNewLeg(View view) {
         TextView legLabel = new TextView(this);
-        legLabel.setText(String.format(Locale.US, "Leg %d", legNumber));
+        legLabel.setText(getString(R.string.leg_label, legNumber));
         legLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Large);
 
         LinearLayout legTypeLayout = new LinearLayout(this);

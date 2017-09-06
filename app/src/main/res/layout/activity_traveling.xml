@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_vertical_margin"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-            android:text="@string/go_text"
+            android:text="@string/button_go"
             android:onClick="beginTraveling"/>
 
         <LinearLayout

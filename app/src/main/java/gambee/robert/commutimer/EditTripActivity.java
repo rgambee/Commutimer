@@ -30,9 +30,11 @@ public class EditTripActivity extends AppCompatActivity {
     public void saveTrip(View view) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss",
                                                            Locale.US);
-        String fileName = "Trip_" + dateFormat.format(trip.getLeg(0).getStartTime()) + ".json";
+        String fileName = (getString(R.string.trip_filename_prefix)
+                           + dateFormat.format(trip.getLeg(0).getStartTime())
+                           + getString(R.string.trip_filename_extension));
         File file = new File(new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), "Commutimer Trips"),
+                Environment.DIRECTORY_DOCUMENTS), getString(R.string.trip_save_directory)),
                 fileName);
         file.getParentFile().mkdirs();
         try {
