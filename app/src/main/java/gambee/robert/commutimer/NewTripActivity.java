@@ -10,10 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class NewTripActivity extends AppCompatActivity {
     private int legNumber = 1;

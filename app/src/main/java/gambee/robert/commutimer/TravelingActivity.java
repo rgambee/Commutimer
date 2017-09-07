@@ -12,12 +12,9 @@ import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Locale;
 
 public class TravelingActivity extends AppCompatActivity {
     Trip trip = new Trip();
