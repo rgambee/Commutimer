@@ -36,13 +36,15 @@ public class TripLeg {
     }
 
     public TripLeg(JSONObject json) throws JSONException, ParseException {
-        String lt = json.getString("LegType");
         String startTimeString = json.getString("StartTime");
         String endTimeString = json.getString("EndTime");
-
-        legType = lt;
         startTime = stringToDate(startTimeString);
         endTime = stringToDate(endTimeString);
+        legType = json.getString("LegType");
+        route = json.getString("Route");
+        routeDirection = json.getString("RouteDirection");
+        source = json.getString("Source");
+        destination = json.getString("Destination");
     }
 
     public String getLegType() {
@@ -82,9 +84,13 @@ public class TripLeg {
 
     public JSONObject toJson() throws org.json.JSONException {
         JSONObject json = new JSONObject();
-        json.put("LegType", legType);
         json.put("StartTime", getStartTimeString());
         json.put("EndTime", getEndTimeString());
+        json.put("LegType", legType);
+        json.put("Route", route);
+        json.put("RouteDirection", routeDirection);
+        json.put("Source", source);
+        json.put("Destination", destination);
         return json;
     }
 
