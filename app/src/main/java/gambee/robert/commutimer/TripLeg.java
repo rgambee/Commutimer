@@ -16,7 +16,7 @@ public class TripLeg {
     private String routeDirection = "";
     private String source = "";
     private String destination = "";
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat(
+    final private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
             "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
             Locale.US);
 
@@ -95,10 +95,10 @@ public class TripLeg {
     }
 
     private String dateToString(Date d) {
-        return dateFormat.format(d);
+        return DATE_FORMAT.format(d);
     }
 
     private Date stringToDate(String s) throws ParseException {
-        return dateFormat.parse(s);
+        return DATE_FORMAT.parse(s);
     }
 }
