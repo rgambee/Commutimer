@@ -100,6 +100,7 @@ public class EditTripActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 writeToFile(file);
+                popup.dismiss();
             }
         });
 
@@ -114,6 +115,7 @@ public class EditTripActivity extends AppCompatActivity {
                         File newFile = new File(file.getParent(),
                                                 newFilenameEditText.getText().toString());
                         writeToFile(newFile);
+                        popup.dismiss();
                     }
                 });
             }
