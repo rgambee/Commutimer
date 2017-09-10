@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -13,9 +14,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class NewTripActivity extends AppCompatActivity {
-    private int legNumber = 1;
+    private int legNumber = 0;
     private LinearLayout legListLayout;
-    private ArrayList<Spinner> legSpinnerList = new ArrayList<Spinner>(3);
+    private ArrayList<TripLeg> tripLegs = new ArrayList<TripLeg>(3);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,33 +52,36 @@ public class NewTripActivity extends AppCompatActivity {
         legTypeLabel.setText(R.string.leg_type_text);
         legTypeLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
 
-        Spinner legTypeSpinner = new Spinner(this);
+        final Spinner legTypeSpinner = new Spinner(this);
         ArrayAdapter<CharSequence> legTypeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.leg_types, android.R.layout.simple_spinner_item);
         legTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         legTypeSpinner.setAdapter(legTypeAdapter);
-        legSpinnerList.add(legTypeSpinner);
+        legTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private int legIndex = legNumber;
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                tripLegs.get(legIndex).setLegType((String) legTypeSpinner.getSelectedItem());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                return;
+            }
+        });
         legTypeLayout.addView(legTypeLabel);
         legTypeLayout.addView(legTypeSpinner);
 
         legListLayout.addView(legLabel);
         legListLayout.addView(legTypeLayout);
+        tripLegs.add(new TripLeg());
         legNumber++;
     }
 
     public void startNewTrip(View view) {
-        Trip trip = parseLegs();
+        Trip trip = new Trip(tripLegs);
         Intent intent = new Intent(this, TravelingActivity.class);
         intent.putExtra("TripParcel", trip);
         startActivity(intent);
-    }
-
-    private Trip parseLegs() {
-        Trip trip = new Trip();
-        for (Spinner legTypeSpinner : legSpinnerList) {
-            String legType = (String) legTypeSpinner.getSelectedItem();
-            trip.addLeg(new TripLeg(legType));
-        }
-        return trip;
     }
 }
