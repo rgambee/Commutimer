@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_vertical_margin"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:text="@string/start_trip_text"
+                android:text="@string/button_start_trip"
                 android:onClick="startNewTrip"/>
         </LinearLayout>
 
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:text="@string/new_leg_text"
+            android:text="@string/button_new_leg"
             android:onClick="addNewLeg"/>
     </LinearLayout>
 </ScrollView>

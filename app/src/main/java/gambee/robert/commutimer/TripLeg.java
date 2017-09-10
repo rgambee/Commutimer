@@ -11,7 +11,7 @@ import java.util.Locale;
 public class TripLeg {
     private Date startTime = new Date(0);
     private Date endTime = new Date(0);
-    private String legType = "";
+    private String mode = "";
     private String route = "";
     private String routeDirection = "";
     private String source = "";
@@ -22,13 +22,13 @@ public class TripLeg {
 
     public TripLeg() {}
 
-    public TripLeg(String legType) {
-        this.legType = legType;
+    public TripLeg(String mode) {
+        this.mode = mode;
     }
 
-    public TripLeg(String legType, String route, String routeDirection,
+    public TripLeg(String mode, String route, String routeDirection,
                    String source, String destination) {
-        this.legType = legType;
+        this.mode = mode;
         this.route = route;
         this.routeDirection = routeDirection;
         this.source = source;
@@ -40,19 +40,19 @@ public class TripLeg {
         String endTimeString = json.getString("EndTime");
         startTime = stringToDate(startTimeString);
         endTime = stringToDate(endTimeString);
-        legType = json.getString("LegType");
+        mode = json.getString("Mode");
         route = json.getString("Route");
         routeDirection = json.getString("RouteDirection");
         source = json.getString("Source");
         destination = json.getString("Destination");
     }
 
-    public String getLegType() {
-        return legType;
+    public String getMode() {
+        return mode;
     }
 
-    public boolean setLegType(String newLegType) {
-        legType = newLegType;
+    public boolean setMode(String newMode) {
+        mode = newMode;
         return true;
     }
 
@@ -86,7 +86,7 @@ public class TripLeg {
         JSONObject json = new JSONObject();
         json.put("StartTime", getStartTimeString());
         json.put("EndTime", getEndTimeString());
-        json.put("LegType", legType);
+        json.put("Mode", mode);
         json.put("Route", route);
         json.put("RouteDirection", routeDirection);
         json.put("Source", source);

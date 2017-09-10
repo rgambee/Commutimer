@@ -3,11 +3,11 @@
     <string name="app_name">Commutimer</string>
 
     <!-- Main activity -->
-    <string name="new_trip_text">New Trip</string>
-    <string name="most_recent_trip_text">Most Recent</string>
+    <string name="button_new_trip">New Trip</string>
+    <string name="most_recent_trip_label">Most Recent</string>
 
     <!-- New trip activity -->
-    <string name="start_trip_text">Start</string>
+    <string name="button_start_trip">Start</string>
     <string name="preset_label">Presets:</string>
     <string-array name="dummy_trip_presets">
         <item>87 Inbound</item>
@@ -15,14 +15,14 @@
         <item>77 Outbound</item>
         <item>RL Inbound</item>
     </string-array>
-    <string name="leg_type_text">Leg Type:</string>
+    <string name="mode_label">Mode:</string>
     <string-array name="leg_types">
         <item>Foot</item>
         <item>Bus</item>
         <item>Subway</item>
         <item>Other</item>
     </string-array>
-    <string name="new_leg_text">New Leg</string>
+    <string name="button_new_leg">New Leg</string>
     <string name="leg_label">Leg %d</string>
 
     <!-- Traveling activity -->

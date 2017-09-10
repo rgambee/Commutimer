@@ -60,10 +60,10 @@ public class TravelingActivity extends AppCompatActivity {
             legLabel.setText(getString(R.string.leg_label, legNumber));
             legLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Large);
 
-            TextView legTypeLabel = new TextView(this);
-            legTypeLabel.setLayoutParams(legLabelParams);
-            legTypeLabel.setText(t.getLegType());
-            legTypeLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
+            TextView modeLabel = new TextView(this);
+            modeLabel.setLayoutParams(legLabelParams);
+            modeLabel.setText(t.getMode());
+            modeLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
 
             Chronometer timer = new Chronometer(this);
             timer.setLayoutParams(timerParams);
@@ -71,7 +71,7 @@ public class TravelingActivity extends AppCompatActivity {
             timer.setGravity(Gravity.END);
 
             legLayout.addView(legLabel);
-            legLayout.addView(legTypeLabel);
+            legLayout.addView(modeLabel);
             legLayout.addView(timer);
             legListLayout.addView(legLayout);
 

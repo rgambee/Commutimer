@@ -38,30 +38,30 @@ public class NewTripActivity extends AppCompatActivity {
         legLabel.setText(getString(R.string.leg_label, legNumber));
         legLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Large);
 
-        LinearLayout legTypeLayout = new LinearLayout(this);
-        legTypeLayout.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout modeLayout = new LinearLayout(this);
+        modeLayout.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(getResources().getDimensionPixelOffset(R.dimen.activity_horizontal_margin),
                           0, 0,
                           getResources().getDimensionPixelOffset(R.dimen.activity_vertical_margin));
-        legTypeLayout.setLayoutParams(params);
+        modeLayout.setLayoutParams(params);
 
-        TextView legTypeLabel = new TextView(this);
-        legTypeLabel.setText(R.string.leg_type_text);
-        legTypeLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
+        TextView modeLabel = new TextView(this);
+        modeLabel.setText(R.string.mode_label);
+        modeLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
 
-        final Spinner legTypeSpinner = new Spinner(this);
-        ArrayAdapter<CharSequence> legTypeAdapter = ArrayAdapter.createFromResource(this,
+        final Spinner modeSpinner = new Spinner(this);
+        ArrayAdapter<CharSequence> modeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.leg_types, android.R.layout.simple_spinner_item);
-        legTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        legTypeSpinner.setAdapter(legTypeAdapter);
-        legTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        modeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        modeSpinner.setAdapter(modeAdapter);
+        modeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             private int legIndex = legNumber;
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                tripLegs.get(legIndex).setLegType((String) legTypeSpinner.getSelectedItem());
+                tripLegs.get(legIndex).setMode((String) modeSpinner.getSelectedItem());
             }
 
             @Override
@@ -69,11 +69,11 @@ public class NewTripActivity extends AppCompatActivity {
                 return;
             }
         });
-        legTypeLayout.addView(legTypeLabel);
-        legTypeLayout.addView(legTypeSpinner);
+        modeLayout.addView(modeLabel);
+        modeLayout.addView(modeSpinner);
 
         legListLayout.addView(legLabel);
-        legListLayout.addView(legTypeLayout);
+        legListLayout.addView(modeLayout);
         tripLegs.add(new TripLeg());
         legNumber++;
     }
