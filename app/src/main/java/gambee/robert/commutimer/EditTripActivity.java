@@ -79,11 +79,11 @@ public class EditTripActivity extends AppCompatActivity {
         buttonLayout.setLayoutParams(params);
         buttonLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-        Button overwriteButton = new Button(this);
+        final Button overwriteButton = new Button(this);
         overwriteButton.setText(getString(R.string.button_overwrite));
         final Button renameButton = new Button(this);
         renameButton.setText(getString(R.string.button_rename));
-        Button cancelButton = new Button(this);
+        final Button cancelButton = new Button(this);
         cancelButton.setText(getString(R.string.button_cancel));
 
         buttonLayout.addView(overwriteButton);
@@ -107,6 +107,7 @@ public class EditTripActivity extends AppCompatActivity {
         renameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                overwriteButton.setEnabled(false);
                 newFilenameEditText.setEnabled(true);
                 renameButton.setText(getString(R.string.button_save));
                 renameButton.setOnClickListener(new View.OnClickListener() {
