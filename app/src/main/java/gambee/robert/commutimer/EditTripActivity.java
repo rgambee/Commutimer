@@ -146,9 +146,5 @@ public class EditTripActivity extends AppCompatActivity {
             Log.e("CommutimerError", ex.toString());
         }
     }
-
-    public void renameClick(View view) {
-        return;
-    }
 }
 
