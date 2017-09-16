@@ -20,7 +20,7 @@ public class GtfsInfo {
         parseRoutes();
     }
 
-    private HashMap<String, ArrayList<String>> parseRoutes() {
+    private void parseRoutes() {
         File routesFile = new File(new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOCUMENTS), "RouteInfo"), "routes.xml");
         if (!routesFile.exists()) {
@@ -42,7 +42,6 @@ public class GtfsInfo {
         } catch (IOException | XmlPullParserException ex) {
             Log.e("CommutimerError", ex.toString());
         }
-        return routesByMode;
     }
 
     private void readMode(XmlPullParser parser) throws IOException, XmlPullParserException {
