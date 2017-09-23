@@ -173,10 +173,10 @@ public class GtfsInfo {
         return response != null && saveToFile(response, "routes.xml");
     }
 
-    private boolean downloadStops(String routeName) {
-        String url = formatUrl(routeName);
+    private boolean downloadStops(String routeId) {
+        String url = formatUrl("stopsbyroute", "route=" + routeId);
         String response = dowloadGtfsData(url);
-        return response != null && saveToFile(response, String.format("%s.xml", routeName));
+        return response != null && saveToFile(response, String.format("%s.xml", routeId));
     }
 
     private String dowloadGtfsData(String url) {
