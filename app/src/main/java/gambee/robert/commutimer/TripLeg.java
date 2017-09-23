@@ -51,9 +51,40 @@ public class TripLeg {
         return mode;
     }
 
-    public boolean setMode(String newMode) {
+    public void setMode(String newMode) {
         mode = newMode;
-        return true;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String newRoute) {
+        route = newRoute;
+    }
+
+    public String getRouteDirection() {
+        return routeDirection;
+    }
+
+    public void setRouteDirection(String newRouteDirection) {
+        routeDirection = newRouteDirection;
+    }
+
+    public String source() {
+        return source;
+    }
+
+    public void setSource(String newSource) {
+        source = newSource;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String newDestination) {
+        destination = newDestination;
     }
 
     public Date getStartTime() {
