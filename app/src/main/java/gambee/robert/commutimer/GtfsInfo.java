@@ -27,7 +27,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class GtfsInfo {
-    private HashMap<String, ArrayList<HashMap<String, String>>> routesByMode = new HashMap<>();
+    private HashMap<String, ArrayList<String>> routesByMode = new HashMap<>();
+    private HashMap<String, String> routeNamesToIds = new HashMap<>();
+    private HashMap<String, String> routeIdsToNames = new HashMap<>();
     private HashMap<String, HashMap<String, ArrayList<String>>> stopsByRoute = new HashMap<>();
     private RequestQueue requestQ;
     private final String MBTA_API_URL = ("http://realtime.mbta.com/developer/api/v2/" + "%s"
@@ -40,29 +42,31 @@ public class GtfsInfo {
         parseRoutes();
     }
 
-    public ArrayList<HashMap<String, String>> getRoutesForMode(String mode) {
+    public ArrayList<String> getRoutesForMode(String mode) {
         if (routesByMode.isEmpty()) {
             parseRoutes();
         }
         return routesByMode.get(mode);
     }
 
-    public ArrayList<String> getDirectionsForRoute(String route) {
-        if (!stopsByRoute.containsKey(route)) {
-            if (!parseStops(route)) {
+    public ArrayList<String> getDirectionsForRoute(String routeName) {
+        String routeId = routeNamesToIds.get(routeName);
+        if (!stopsByRoute.containsKey(routeId)) {
+            if (!parseStops(routeId)) {
                 return null;
             }
         }
-        return new ArrayList<>(stopsByRoute.get(route).keySet());
+        return new ArrayList<>(stopsByRoute.get(routeId).keySet());
     }
 
-    public ArrayList<String> getStopsForRouteDirection(String route, String direction) {
-        if (!stopsByRoute.containsKey(route)) {
-            if (!parseStops(route)) {
+    public ArrayList<String> getStopsForRouteDirection(String routeName, String direction) {
+        String routeId = routeNamesToIds.get(routeName);
+        if (!stopsByRoute.containsKey(routeId)) {
+            if (!parseStops(routeId)) {
                 return null;
             }
         }
-        return stopsByRoute.get(route).get(direction);
+        return stopsByRoute.get(routeId).get(direction);
     }
 
     private boolean parseRoutes() {
@@ -95,13 +99,14 @@ public class GtfsInfo {
 
     private void readMode(XmlPullParser parser) throws IOException, XmlPullParserException {
         String modeName = parser.getAttributeValue(null, "mode_name");
-        ArrayList<HashMap<String, String>> routes = new ArrayList<>();
+        ArrayList<String> routes = new ArrayList<>();
         while (parser.nextTag() != XmlPullParser.END_TAG) {
             if (parser.getName().equals("route")) {
-                HashMap<String, String> hm = new HashMap<>(2);
-                hm.put("route_id", parser.getAttributeValue(null, "route_id"));
-                hm.put("route_name", parser.getAttributeValue(null, "route_name"));
-                routes.add(hm);
+                String routeId = parser.getAttributeValue(null, "route_id");
+                String routeName = parser.getAttributeValue(null, "route_name");
+                routes.add(routeName);
+                routeIdsToNames.put(routeId, routeName);
+                routeNamesToIds.put(routeName, routeId);
             }
             parser.nextTag();
         }
@@ -132,6 +137,7 @@ public class GtfsInfo {
                         ArrayList<String> stops = new ArrayList<>();
                         while (parser.nextTag() != XmlPullParser.END_TAG) {
                             stops.add(parser.getAttributeValue(null, "parent_station_name"));
+                            parser.nextTag();
                         }
                         if (stopsByRoute.containsKey(route)) {
                             stopsByRoute.get(route).put(direction, stops);
