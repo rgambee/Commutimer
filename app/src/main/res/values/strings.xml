@@ -24,6 +24,10 @@
     </string-array>
     <string name="button_new_leg">New Leg</string>
     <string name="leg_label">Leg %d</string>
+    <string name="route_label">Route:</string>
+    <string name="direction_label">Direction:</string>
+    <string name="source_label">Source:</string>
+    <string name="destination_label">Destination:</string>
 
     <!-- Traveling activity -->
     <string name="total_timer_label">Total Time:</string>
