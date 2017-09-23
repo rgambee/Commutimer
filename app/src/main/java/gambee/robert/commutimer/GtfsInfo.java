@@ -186,7 +186,7 @@ public class GtfsInfo {
                 Request.Method.GET, url, future, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("CommutimerErorr", error.toString());
+                Log.e("CommutimerError", error.toString());
             }
         });
         requestQ.add(routesRequest);
