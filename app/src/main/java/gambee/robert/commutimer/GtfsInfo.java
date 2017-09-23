@@ -4,38 +4,56 @@ import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.StringRequest;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class GtfsInfo {
-    private HashMap<String, ArrayList<String>> routesByMode = new HashMap<>();
+    private HashMap<String, ArrayList<HashMap<String, String>>> routesByMode = new HashMap<>();
     private HashMap<String, HashMap<String, ArrayList<String>>> stopsByRoute = new HashMap<>();
+    private RequestQueue requestQ;
+    private final String MBTA_API_URL = ("http://realtime.mbta.com/developer/api/v2/" + "%s"
+                                         + "?api_key=%s" + "&format=%s" + "%s");
+    private final String MBTA_API_KEY = "Ut2vwfYEi0OKShX3x5AFyw";
+    private final String MBTA_API_FORMAT = "xml";
 
-    public GtfsInfo() {
+    public GtfsInfo(RequestQueue rq) {
+        requestQ = rq;
         parseRoutes();
     }
 
-    public ArrayList<String> getRoutesForMode(String mode) {
+    public ArrayList<HashMap<String, String>> getRoutesForMode(String mode) {
         if (routesByMode.isEmpty()) {
             parseRoutes();
         }
         return routesByMode.get(mode);
     }
 
-    public Set<String> getDirectionsForRoute(String route) {
+    public ArrayList<String> getDirectionsForRoute(String route) {
         if (!stopsByRoute.containsKey(route)) {
             if (!parseStops(route)) {
                 return null;
             }
         }
-        return stopsByRoute.get(route).keySet();
+        return new ArrayList<>(stopsByRoute.get(route).keySet());
     }
 
     public ArrayList<String> getStopsForRouteDirection(String route, String direction) {
@@ -47,11 +65,13 @@ public class GtfsInfo {
         return stopsByRoute.get(route).get(direction);
     }
 
-    private void parseRoutes() {
+    private boolean parseRoutes() {
         File routesFile = new File(new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOCUMENTS), "RouteInfo"), "routes.xml");
         if (!routesFile.exists()) {
-            downloadRoutes();
+            if (!downloadRoutes()) {
+                return false;
+            }
         }
         try {
             FileInputStream fis = new FileInputStream(routesFile);
@@ -68,15 +88,20 @@ public class GtfsInfo {
             }
         } catch (IOException | XmlPullParserException ex) {
             Log.e("CommutimerError", ex.toString());
+            return false;
         }
+        return true;
     }
 
     private void readMode(XmlPullParser parser) throws IOException, XmlPullParserException {
         String modeName = parser.getAttributeValue(null, "mode_name");
-        ArrayList<String> routes = new ArrayList<>();
+        ArrayList<HashMap<String, String>> routes = new ArrayList<>();
         while (parser.nextTag() != XmlPullParser.END_TAG) {
             if (parser.getName().equals("route")) {
-                routes.add(parser.getAttributeValue(null, "route_name"));
+                HashMap<String, String> hm = new HashMap<>(2);
+                hm.put("route_id", parser.getAttributeValue(null, "route_id"));
+                hm.put("route_name", parser.getAttributeValue(null, "route_name"));
+                routes.add(hm);
             }
             parser.nextTag();
         }
@@ -91,7 +116,7 @@ public class GtfsInfo {
         File stopsFile = new File(new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOCUMENTS), "RouteInfo"), route + ".xml");
         if (!stopsFile.exists()) {
-            if (!downloadStops()) {
+            if (!downloadStops(route)) {
                 return false;
             }
         }
@@ -125,11 +150,65 @@ public class GtfsInfo {
         return true;
     }
 
-    private boolean downloadRoutes() {
-        return false;
+    private String formatUrl(String query) {
+        return formatUrl(query, "");
     }
 
-    private boolean downloadStops() {
-        return false;
+    private String formatUrl(String query, String parameters) {
+        if (!parameters.equals("")) {
+            parameters = "&" + parameters;
+        }
+        return String.format(MBTA_API_URL, query, MBTA_API_KEY, MBTA_API_FORMAT, parameters);
+    }
+
+    private boolean downloadRoutes() {
+        String url = formatUrl("routes");
+        String response = dowloadGtfsData(url);
+        return response != null && saveToFile(response, "routes.xml");
+    }
+
+    private boolean downloadStops(String routeName) {
+        String url = formatUrl(routeName);
+        String response = dowloadGtfsData(url);
+        return response != null && saveToFile(response, String.format("%s.xml", routeName));
+    }
+
+    private String dowloadGtfsData(String url) {
+        Log.d("CommutimerDebug", url);
+        RequestFuture<String> future = RequestFuture.newFuture();
+        StringRequest routesRequest = new StringRequest(
+                Request.Method.GET, url, future, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("CommutimerErorr", error.toString());
+            }
+        });
+        requestQ.add(routesRequest);
+        try {
+            return future.get(30, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException ex) {
+            Log.e("CommutimerError", ex.toString());
+            return null;
+        }
+    }
+
+    private boolean saveToFile(String data, String fileName) {
+        File file = new File(new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS), "RouteInfo"), fileName);
+        file.getParentFile().mkdirs();
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            Log.d("CommutimerDebug", "Saving to " + fileName);
+            try {
+                fos.write(data.getBytes("UTF-8"));
+            } catch (UnsupportedEncodingException ex) {
+                fos.write(data.getBytes());
+            }
+            fos.close();
+        } catch (IOException ex) {
+            Log.e("CommutimerError", ex.toString());
+            return false;
+        }
+        return true;
     }
 }
