@@ -41,8 +41,10 @@ public class EditTripActivity extends AppCompatActivity {
         String fileName = (getString(R.string.trip_filename_prefix)
                 + dateFormat.format(trip.getLeg(0).getStartTime())
                 + getString(R.string.trip_filename_extension));
-        File file = new File(new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), getString(R.string.trip_save_directory)),
+        File file = new File(new File (new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS),
+                getString(R.string.app_name)),
+                getString(R.string.trip_save_directory)),
                 fileName);
         if (file.exists()) {
             askForOverwriteConfirmation(file);

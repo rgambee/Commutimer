@@ -47,4 +47,9 @@
     <string name="button_overwrite">Overwrite</string>
     <string name="button_rename">Rename</string>
     <string name="button_cancel">Cancel</string>
+
+    <!-- GtfsInfo -->
+    <string name="gtfs_info_directory">RouteInfo</string>
+    <string name="gtfs_info_file_extension">.xml</string>
+    <string name="routes_filename">routes</string>
 </resources>

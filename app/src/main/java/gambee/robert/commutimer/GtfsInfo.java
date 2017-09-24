@@ -70,8 +70,11 @@ public class GtfsInfo {
     }
 
     private boolean parseRoutes() {
-        File routesFile = new File(new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), "RouteInfo"), "routes.xml");
+        File routesFile = new File(new File(new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS),
+                "Commutimer"),
+                "RouteInfo"),
+                "routes.xml");
         if (!routesFile.exists()) {
             if (!downloadRoutes()) {
                 return false;
@@ -118,8 +121,11 @@ public class GtfsInfo {
     }
 
     private boolean parseStops(String route) {
-        File stopsFile = new File(new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), "RouteInfo"), route + ".xml");
+        File stopsFile = new File(new File(new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS),
+                "Commutimer"),
+                "RouteInfo"),
+                route + ".xml");
         if (!stopsFile.exists()) {
             if (!downloadStops(route)) {
                 return false;
@@ -170,13 +176,15 @@ public class GtfsInfo {
     private boolean downloadRoutes() {
         String url = formatUrl("routes");
         String response = dowloadGtfsData(url);
-        return response != null && saveToFile(response, "routes.xml");
+        return response != null && saveToFile(
+            response, "routes.xml");
     }
 
     private boolean downloadStops(String routeId) {
         String url = formatUrl("stopsbyroute", "route=" + routeId);
         String response = dowloadGtfsData(url);
-        return response != null && saveToFile(response, String.format("%s.xml", routeId));
+        return response != null && saveToFile(
+            response, routeId + ".xml");
     }
 
     private String dowloadGtfsData(String url) {
@@ -199,8 +207,11 @@ public class GtfsInfo {
     }
 
     private boolean saveToFile(String data, String fileName) {
-        File file = new File(new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), "RouteInfo"), fileName);
+        File file = new File(new File(new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS),
+                "Commutimer"),
+                "RouteInfo"),
+                fileName);
         file.getParentFile().mkdirs();
         try {
             FileOutputStream fos = new FileOutputStream(file);
