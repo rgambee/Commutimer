@@ -37,7 +37,7 @@
     <string name="button_continue">Continue</string>
 
     <!-- Edit trip activity -->
-    <string name="trip_save_directory">Commutimer Trips</string>
+    <string name="trip_save_directory">CommutimerTrips</string>
     <string name="trip_filename_prefix">Trip_</string>
     <string name="trip_filename_extension">.json</string>
     <string name="saved_message">Saved trip to %s</string>
