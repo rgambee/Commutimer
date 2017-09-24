@@ -203,7 +203,7 @@ public class GtfsInfo {
         });
         requestQ.add(routesRequest);
         try {
-            return future.get(30, TimeUnit.SECONDS);
+            return future.get(10, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             Log.e("CommutimerError", ex.toString());
             return null;
