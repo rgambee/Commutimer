@@ -142,7 +142,11 @@ public class GtfsInfo {
                         String direction = parser.getAttributeValue(null, "direction_name");
                         ArrayList<String> stops = new ArrayList<>();
                         while (parser.nextTag() != XmlPullParser.END_TAG) {
-                            stops.add(parser.getAttributeValue(null, "parent_station_name"));
+                            String stopName = parser.getAttributeValue(null, "parent_station_name");
+                            if (stopName.equals("")) {
+                                stopName = parser.getAttributeValue(null, "stop_name");
+                            }
+                            stops.add(stopName);
                             parser.nextTag();
                         }
                         if (stopsByRoute.containsKey(route)) {
