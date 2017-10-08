@@ -254,9 +254,9 @@ public class NewTripActivity extends AppCompatActivity {
         } else {
             spinner.setEnabled(true);
         }
-        ArrayAdapter<String> routeAdapter = new ArrayAdapter<>(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_dropdown_item, routes);
-        spinner.setAdapter(routeAdapter);
+        spinner.setAdapter(adapter);
     }
 
     private void updateDirections(Spinner spinner, String route) {
@@ -267,9 +267,9 @@ public class NewTripActivity extends AppCompatActivity {
         } else {
             spinner.setEnabled(true);
         }
-        ArrayAdapter<String> routeAdapter = new ArrayAdapter<>(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_dropdown_item, directions);
-        spinner.setAdapter(routeAdapter);
+        spinner.setAdapter(adapter);
     }
 
     private void updateStops(Spinner spinner, String route, String direction) {
@@ -280,9 +280,9 @@ public class NewTripActivity extends AppCompatActivity {
         } else {
             spinner.setEnabled(true);
         }
-        ArrayAdapter<String> routeAdapter = new ArrayAdapter<>(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_dropdown_item, stops);
-        spinner.setAdapter(routeAdapter);
+        spinner.setAdapter(adapter);
     }
 
     public void startNewTrip(View view) {
