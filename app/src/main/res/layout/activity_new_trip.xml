@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/new_trip_root_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,13 +17,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Menu"
                 android:text="@string/preset_label"/>
             <Spinner
-                android:id="@+id/trip_preset_spinner"
+                android:id="@+id/preset_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
             </Spinner>
+            <Button
+                android:id="@+id/save_preset_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_save_preset"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:onClick="savePreset"/>
         </LinearLayout>
 
         <LinearLayout

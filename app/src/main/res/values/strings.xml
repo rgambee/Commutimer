@@ -9,12 +9,8 @@
     <!-- New trip activity -->
     <string name="button_start_trip">Start</string>
     <string name="preset_label">Presets:</string>
-    <string-array name="dummy_trip_presets">
-        <item>87 Inbound</item>
-        <item>88 Inbound</item>
-        <item>77 Outbound</item>
-        <item>RL Inbound</item>
-    </string-array>
+    <string name="button_save_preset">Save Preset</string>
+    <string name="preset_directory">Presets</string>
     <string name="mode_label">Mode:</string>
     <string-array name="leg_types">
         <item>Foot</item>

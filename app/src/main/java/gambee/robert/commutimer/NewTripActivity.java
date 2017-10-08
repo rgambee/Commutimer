@@ -1,8 +1,11 @@
 package gambee.robert.commutimer;
 
 import android.content.Intent;
+import android.os.Environment;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,6 +16,12 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class NewTripActivity extends AppCompatActivity {
@@ -24,19 +33,75 @@ public class NewTripActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        routeInfo =  new GtfsInfo(Volley.newRequestQueue(this));
-
         setContentView(R.layout.activity_new_trip);
-
-        Spinner presetSpinner = (Spinner) findViewById(R.id.trip_preset_spinner);
-        ArrayAdapter<CharSequence> presetAdapter = ArrayAdapter.createFromResource(this,
-                R.array.dummy_trip_presets, android.R.layout.simple_spinner_item);
-        presetAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        presetSpinner.setAdapter(presetAdapter);
-
+        routeInfo =  new GtfsInfo(Volley.newRequestQueue(this));
+        listPresets();
         legListLayout = (LinearLayout) findViewById(R.id.leg_list_layout);
         addNewLeg(new View(this));
+    }
+
+    public void listPresets() {
+        File presetDirectory = new File(new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS),
+                getString(R.string.app_name)),
+                getString(R.string.preset_directory));
+        if (!presetDirectory.exists()) {
+            presetDirectory.mkdirs();
+        }
+        class PresetFilter implements FilenameFilter {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(getString(R.string.trip_filename_extension));
+            }
+        }
+        File[] presets = presetDirectory.listFiles(new PresetFilter());
+        ArrayList<String> presetNames = new ArrayList<>(presets.length);
+        for (File file : presets) {
+            presetNames.add(file.getName());
+        }
+
+        final Spinner presetsSpinner = (Spinner) findViewById(R.id.preset_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+            android.R.layout.simple_spinner_dropdown_item, presetNames);
+        presetsSpinner.setAdapter(adapter);
+        presetsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                loadPreset((String) adapterView.getItemAtPosition(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                return;
+            }
+        });
+    }
+
+    public void loadPreset(String presetName) {
+
+    }
+
+    public void savePreset(View view) {
+        Trip trip = new Trip(tripLegs);
+        File file = new File(new File(new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS),
+                getString(R.string.app_name)),
+                getString(R.string.preset_directory)),
+                "preset0.json");
+        file.getParentFile().mkdirs();
+        try {
+            // TODO: BufferedFileWriter
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(trip.toJson().toString(4).getBytes("UTF-8"));
+            fos.close();
+            Snackbar snackbar = Snackbar.make(
+                    findViewById(R.id.new_trip_root_item),
+                    getString(R.string.saved_message, file.getName()),
+                    Snackbar.LENGTH_LONG);
+            snackbar.show();
+        } catch (JSONException | IOException ex) {
+            Log.e("CommutimerError", ex.toString());
+        }
     }
 
     public void addNewLeg(View view) {
