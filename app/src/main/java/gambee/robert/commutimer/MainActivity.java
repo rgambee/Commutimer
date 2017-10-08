@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openNewTrip(View view) {
-        Intent intent = new Intent(this, NewTripActivity.class);
+        Intent intent = new Intent(this, EditTripActivity.class);
         startActivity(intent);
     }
 }
