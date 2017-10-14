@@ -71,7 +71,7 @@ public class TripLeg {
         routeDirection = newRouteDirection;
     }
 
-    public String source() {
+    public String getSource() {
         return source;
     }
 
