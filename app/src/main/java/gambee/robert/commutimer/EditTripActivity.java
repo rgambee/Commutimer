@@ -29,6 +29,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Locale;
 
 public class EditTripActivity extends AppCompatActivity {
@@ -81,6 +82,10 @@ public class EditTripActivity extends AppCompatActivity {
                 saveTrip(view);
             }
         });
+        Iterator<TripLeg> iter = trip.iterLegs();
+        while (iter.hasNext()) {
+            addLeg(iter.next());
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,6 +160,12 @@ public class EditTripActivity extends AppCompatActivity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void addNewLeg(View view) {
+        TripLeg newLeg = new TripLeg();
+        trip.addLeg(newLeg);
+        addLeg(newLeg);
+    }
+
+    public void addLeg(final TripLeg tripLeg) {
         LinearLayout modeLayout = new LinearLayout(this);
         LinearLayout routeLayout = new LinearLayout(this);
         LinearLayout stopsLayout = new LinearLayout(this);
@@ -191,12 +202,11 @@ public class EditTripActivity extends AppCompatActivity {
                 R.array.leg_types, android.R.layout.simple_spinner_dropdown_item);
         modeSpinner.setAdapter(modeAdapter);
         modeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            private final int legIndex = legNumber;
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String mode = (String) modeSpinner.getSelectedItem();
-                trip.getLeg(legIndex).setMode(mode);
-                updateRoutes(routeSpinner, mode);
+                tripLeg.setMode(mode);
+                updateRoutes(routeSpinner, mode, tripLeg.getRoute());
             }
 
             @Override
@@ -204,6 +214,10 @@ public class EditTripActivity extends AppCompatActivity {
                 return;
             }
         });
+        int modePositon = modeAdapter.getPosition(tripLeg.getMode());
+        if (modePositon >= 0 ) {
+            modeSpinner.setSelection(modePositon);
+        }
         modeLayout.addView(legLabel);
         modeLayout.addView(modeLabel);
         modeLayout.addView(modeSpinner);
@@ -214,12 +228,11 @@ public class EditTripActivity extends AppCompatActivity {
         directionLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
 
         routeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            private final int legIndex = legNumber;
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String route = (String) routeSpinner.getSelectedItem();
-                trip.getLeg(legIndex).setRoute(route);
-                updateDirections(directionSpinner, route);
+                tripLeg.setRoute(route);
+                updateDirections(directionSpinner, route, tripLeg.getRouteDirection());
             }
 
             @Override
@@ -228,13 +241,14 @@ public class EditTripActivity extends AppCompatActivity {
             }
         });
         directionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            private final int legIndex = legNumber;
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String direction = (String) directionSpinner.getSelectedItem();
-                trip.getLeg(legIndex).setRouteDirection(direction);
-                updateStops(sourceSpinner, trip.getLeg(legIndex).getRoute(), direction);
-                updateStops(destinationSpinner, trip.getLeg(legIndex).getRoute(), direction);
+                tripLeg.setRouteDirection(direction);
+                updateStops(sourceSpinner, tripLeg.getRoute(), direction,
+                            tripLeg.getSource());
+                updateStops(destinationSpinner, tripLeg.getRoute(), direction,
+                            tripLeg.getDestination());
             }
 
             @Override
@@ -256,11 +270,10 @@ public class EditTripActivity extends AppCompatActivity {
         destinationLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
 
         sourceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            private final int legIndex = legNumber;
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String source = (String) sourceSpinner.getSelectedItem();
-                trip.getLeg(legIndex).setSource(source);
+                tripLeg.setSource(source);
             }
 
             @Override
@@ -269,11 +282,10 @@ public class EditTripActivity extends AppCompatActivity {
             }
         });
         destinationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            private final int legIndex = legNumber;
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String destination = (String) destinationSpinner.getSelectedItem();
-                trip.getLeg(legIndex).setDestination(destination);
+                tripLeg.setDestination(destination);
             }
 
             @Override
@@ -292,11 +304,10 @@ public class EditTripActivity extends AppCompatActivity {
         legListLayout.addView(modeLayout);
         legListLayout.addView(routeLayout);
         legListLayout.addView(stopsLayout);
-        trip.addLeg(new TripLeg());
         legNumber++;
     }
 
-    private void updateRoutes(Spinner spinner, String mode) {
+    private void updateRoutes(Spinner spinner, String mode, String existingRoute) {
         ArrayList<String> routes = routeInfo.getRoutesForMode(mode);
         if (routes == null) {
             routes = new ArrayList<>(0);
@@ -307,9 +318,13 @@ public class EditTripActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_dropdown_item, routes);
         spinner.setAdapter(adapter);
+        int routePosition = adapter.getPosition(existingRoute);
+        if (routePosition >= 0) {
+            spinner.setSelection(routePosition);
+        }
     }
 
-    private void updateDirections(Spinner spinner, String route) {
+    private void updateDirections(Spinner spinner, String route, String existingDirection) {
         ArrayList<String> directions = routeInfo.getDirectionsForRoute(route);
         if (directions == null) {
             directions = new ArrayList<>(0);
@@ -320,9 +335,13 @@ public class EditTripActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_dropdown_item, directions);
         spinner.setAdapter(adapter);
+        int directionPosition = adapter.getPosition(existingDirection);
+        if (directionPosition >= 0) {
+            spinner.setSelection(directionPosition);
+        }
     }
 
-    private void updateStops(Spinner spinner, String route, String direction) {
+    private void updateStops(Spinner spinner, String route, String direction, String existingStop) {
         ArrayList<String> stops = routeInfo.getStopsForRouteDirection(route, direction);
         if (stops == null) {
             stops = new ArrayList<>(0);
@@ -333,6 +352,10 @@ public class EditTripActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_dropdown_item, stops);
         spinner.setAdapter(adapter);
+        int stopPosition = adapter.getPosition(existingStop);
+        if (stopPosition >= 0) {
+            spinner.setSelection(stopPosition);
+        }
     }
 
     public void startNewTrip(View view) {
