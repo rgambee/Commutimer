@@ -197,7 +197,7 @@ public class EditTripActivity extends AppCompatActivity {
                 0, 0, 0);
 
         ArrayAdapter<CharSequence> modeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.leg_types, android.R.layout.simple_spinner_dropdown_item);
+                R.array.leg_types, R.layout.truncated_spinner_text);
         modeSpinner.setAdapter(modeAdapter);
         modeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -317,7 +317,7 @@ public class EditTripActivity extends AppCompatActivity {
             spinner.setEnabled(true);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, routes);
+                this, R.layout.truncated_spinner_text, routes);
         spinner.setAdapter(adapter);
         int routePosition = adapter.getPosition(existingRoute);
         if (routePosition >= 0) {
@@ -334,7 +334,7 @@ public class EditTripActivity extends AppCompatActivity {
             spinner.setEnabled(true);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, directions);
+                this, R.layout.truncated_spinner_text, directions);
         spinner.setAdapter(adapter);
         int directionPosition = adapter.getPosition(existingDirection);
         if (directionPosition >= 0) {
@@ -351,7 +351,7 @@ public class EditTripActivity extends AppCompatActivity {
             spinner.setEnabled(true);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, stops);
+                this, R.layout.truncated_spinner_text, stops);
         spinner.setAdapter(adapter);
         int stopPosition = adapter.getPosition(existingStop);
         if (stopPosition >= 0) {
