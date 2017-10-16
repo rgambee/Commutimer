@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.Locale;
 
 public class EditTripActivity extends AppCompatActivity {
-    private boolean existingTrip = false;
     private int legNumber = 0;
     private LinearLayout legListLayout;
     private Trip trip = new Trip();
@@ -51,10 +50,8 @@ public class EditTripActivity extends AppCompatActivity {
         Trip passedTrip = intent.getParcelableExtra("TripParcel");
         if (passedTrip != null) {
             trip = passedTrip;
-            existingTrip = true;
             setUpExistingTrip();
         } else {
-            existingTrip = false;
             setUpNewTrip();
         }
     }
