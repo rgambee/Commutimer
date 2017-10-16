@@ -168,7 +168,8 @@ public class EditTripActivity extends AppCompatActivity {
     public void addLeg(final TripLeg tripLeg) {
         LinearLayout modeLayout = new LinearLayout(this);
         LinearLayout routeLayout = new LinearLayout(this);
-        LinearLayout stopsLayout = new LinearLayout(this);
+        LinearLayout sourceLayout = new LinearLayout(this);
+        LinearLayout destinationLayout = new LinearLayout(this);
 
         TextView legLabel = new TextView(this);
         TextView modeLabel = new TextView(this);
@@ -294,16 +295,19 @@ public class EditTripActivity extends AppCompatActivity {
             }
         });
 
-        stopsLayout.setOrientation(LinearLayout.HORIZONTAL);
-        stopsLayout.setLayoutParams(params);
-        stopsLayout.addView(sourceLabel);
-        stopsLayout.addView(sourceSpinner);
-        stopsLayout.addView(destinationLabel);
-        stopsLayout.addView(destinationSpinner);
+        sourceLayout.setOrientation(LinearLayout.HORIZONTAL);
+        sourceLayout.setLayoutParams(params);
+        destinationLayout.setOrientation(LinearLayout.HORIZONTAL);
+        destinationLabel.setLayoutParams(params);
+        sourceLayout.addView(sourceLabel);
+        sourceLayout.addView(sourceSpinner);
+        destinationLayout.addView(destinationLabel);
+        destinationLayout.addView(destinationSpinner);
 
         legListLayout.addView(modeLayout);
         legListLayout.addView(routeLayout);
-        legListLayout.addView(stopsLayout);
+        legListLayout.addView(sourceLayout);
+        legListLayout.addView(destinationLayout);
         legNumber++;
     }
 
