@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.android.volley.toolbox.Volley;
 
@@ -163,38 +163,26 @@ public class EditTripActivity extends AppCompatActivity {
     }
 
     public void addLeg(final TripLeg tripLeg) {
-        LinearLayout modeLayout = new LinearLayout(this);
-        LinearLayout routeLayout = new LinearLayout(this);
-        LinearLayout sourceLayout = new LinearLayout(this);
-        LinearLayout destinationLayout = new LinearLayout(this);
+        LinearLayout legListLayout = (LinearLayout) findViewById(R.id.leg_list_layout);
+        LinearLayout tripLegLayout = (LinearLayout) View.inflate(this, R.layout.trip_leg,
+                                                                 legListLayout);
 
-        TextView legLabel = new TextView(this);
-        TextView modeLabel = new TextView(this);
-        TextView routeLabel = new TextView(this);
-        TextView directionLabel = new TextView(this);
-        TextView sourceLabel = new TextView(this);
-        TextView destinationLabel = new TextView(this);
-
-        final Spinner modeSpinner = new Spinner(this);
-        final Spinner routeSpinner = new Spinner(this);
-        final Spinner directionSpinner = new Spinner(this);
-        final Spinner sourceSpinner = new Spinner(this);
-        final Spinner destinationSpinner = new Spinner(this);
-
-        modeLayout.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        modeLayout.setLayoutParams(params);
+        TextView legLabel = (TextView) findViewById(R.id.leg_label_text);
+        final Spinner modeSpinner = (Spinner) findViewById(R.id.mode_spinner);
+        final Spinner routeSpinner = (Spinner) findViewById(R.id.route_spinner);
+        final Spinner directionSpinner = (Spinner) findViewById(R.id.direction_spinner);
+        final Spinner sourceSpinner = (Spinner) findViewById(R.id.source_spinner);
+        final Spinner destinationSpinner = (Spinner) findViewById(R.id.destination_spinner);
+        TimePicker startPicker = (TimePicker) findViewById(R.id.start_time_picker);
+        TimePicker endPicker = (TimePicker) findViewById(R.id.end_time_picker);
+        // Give Views new IDs to avoid conflicts
+        View[] needNewIDs = {legLabel, modeSpinner, routeSpinner, directionSpinner,
+                             sourceSpinner, destinationSpinner, startPicker, endPicker};
+        for (View v : needNewIDs) {
+            v.setId(View.generateViewId());
+        }
 
         legLabel.setText(getString(R.string.leg_label, legNumber));
-        legLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Large);
-
-        modeLabel.setText(R.string.mode_label);
-        modeLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
-        modeLabel.setPadding(
-                getResources().getDimensionPixelOffset(R.dimen.activity_horizontal_margin),
-                0, 0, 0);
 
         ArrayAdapter<CharSequence> modeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.leg_types, R.layout.truncated_spinner_text);
@@ -216,14 +204,6 @@ public class EditTripActivity extends AppCompatActivity {
         if (modePositon >= 0 ) {
             modeSpinner.setSelection(modePositon);
         }
-        modeLayout.addView(legLabel);
-        modeLayout.addView(modeLabel);
-        modeLayout.addView(modeSpinner);
-
-        routeLabel.setText(R.string.route_label);
-        routeLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
-        directionLabel.setText(R.string.direction_label);
-        directionLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
 
         routeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -255,18 +235,6 @@ public class EditTripActivity extends AppCompatActivity {
             }
         });
 
-        routeLayout.setOrientation(LinearLayout.HORIZONTAL);
-        routeLayout.setLayoutParams(params);
-        routeLayout.addView(routeLabel);
-        routeLayout.addView(routeSpinner);
-        routeLayout.addView(directionLabel);
-        routeLayout.addView(directionSpinner);
-
-        sourceLabel.setText(R.string.source_label);
-        sourceLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
-        destinationLabel.setText(R.string.destination_label);
-        destinationLabel.setTextAppearance(R.style.Base_TextAppearance_AppCompat_Menu);
-
         sourceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -291,20 +259,6 @@ public class EditTripActivity extends AppCompatActivity {
                 return;
             }
         });
-
-        sourceLayout.setOrientation(LinearLayout.HORIZONTAL);
-        sourceLayout.setLayoutParams(params);
-        destinationLayout.setOrientation(LinearLayout.HORIZONTAL);
-        destinationLabel.setLayoutParams(params);
-        sourceLayout.addView(sourceLabel);
-        sourceLayout.addView(sourceSpinner);
-        destinationLayout.addView(destinationLabel);
-        destinationLayout.addView(destinationSpinner);
-
-        legListLayout.addView(modeLayout);
-        legListLayout.addView(routeLayout);
-        legListLayout.addView(sourceLayout);
-        legListLayout.addView(destinationLayout);
         legNumber++;
     }
 
