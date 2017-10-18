@@ -34,7 +34,6 @@ import java.util.Locale;
 
 public class EditTripActivity extends AppCompatActivity {
     private int legNumber = 0;
-    private LinearLayout legListLayout;
     private Trip trip = new Trip();
     private GtfsInfo routeInfo;
 
@@ -44,7 +43,6 @@ public class EditTripActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_trip);
 
         routeInfo =  new GtfsInfo(Volley.newRequestQueue(this));
-        legListLayout = (LinearLayout) findViewById(R.id.leg_list_layout);
 
         Intent intent = getIntent();
         Trip passedTrip = intent.getParcelableExtra("TripParcel");
