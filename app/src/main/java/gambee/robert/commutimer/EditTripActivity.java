@@ -29,6 +29,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -257,6 +258,12 @@ public class EditTripActivity extends AppCompatActivity {
                 return;
             }
         });
+
+        startPicker.setVisibility(tripLeg.getStartTime().equals(new Date(0))
+                                  ? View.GONE : View.VISIBLE);
+        endPicker.setVisibility(tripLeg.getEndTime().equals(new Date(0))
+                                ? View.GONE : View.VISIBLE);
+
         legNumber++;
     }
 
