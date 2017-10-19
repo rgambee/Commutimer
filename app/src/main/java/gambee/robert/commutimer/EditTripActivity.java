@@ -263,6 +263,28 @@ public class EditTripActivity extends AppCompatActivity {
                                   ? View.GONE : View.VISIBLE);
         endPicker.setVisibility(tripLeg.getEndTime().equals(new Date(0))
                                 ? View.GONE : View.VISIBLE);
+        startPicker.setHour(tripLeg.getStartTime().getHours());
+        startPicker.setMinute(tripLeg.getStartTime().getMinutes());
+        endPicker.setHour(tripLeg.getEndTime().getHours());
+        endPicker.setMinute(tripLeg.getEndTime().getMinutes());
+        startPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                Date newStartTime = new Date();
+                newStartTime.setHours(hourOfDay);
+                newStartTime.setMinutes(minute);
+                tripLeg.setStartTime(newStartTime);
+            }
+        });
+        endPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                Date newEndTime = new Date();
+                newEndTime.setHours(hourOfDay);
+                newEndTime.setMinutes(minute);
+                tripLeg.setEndTime(newEndTime);
+            }
+        });
 
         legNumber++;
     }
