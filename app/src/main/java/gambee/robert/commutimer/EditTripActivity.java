@@ -36,6 +36,7 @@ import java.util.Locale;
 public class EditTripActivity extends AppCompatActivity {
     private int legNumber = 0;
     private Trip trip = new Trip();
+    private boolean existingTrip = false;
     private GtfsInfo routeInfo;
 
     @Override
@@ -48,9 +49,11 @@ public class EditTripActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Trip passedTrip = intent.getParcelableExtra("TripParcel");
         if (passedTrip != null) {
+            existingTrip = true;
             trip = passedTrip;
             setUpExistingTrip();
         } else {
+            existingTrip = false;
             setUpNewTrip();
         }
     }
@@ -259,10 +262,8 @@ public class EditTripActivity extends AppCompatActivity {
             }
         });
 
-        startPicker.setVisibility(tripLeg.getStartTime().equals(new Date(0))
-                                  ? View.GONE : View.VISIBLE);
-        endPicker.setVisibility(tripLeg.getEndTime().equals(new Date(0))
-                                ? View.GONE : View.VISIBLE);
+        startPicker.setVisibility(existingTrip ? View.VISIBLE : View.GONE);
+        endPicker.setVisibility(existingTrip ? View.VISIBLE : View.GONE);
         startPicker.setHour(tripLeg.getStartTime().getHours());
         startPicker.setMinute(tripLeg.getStartTime().getMinutes());
         endPicker.setHour(tripLeg.getEndTime().getHours());
