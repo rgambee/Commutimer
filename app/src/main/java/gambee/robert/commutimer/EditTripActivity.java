@@ -34,7 +34,6 @@ import java.util.Iterator;
 import java.util.Locale;
 
 public class EditTripActivity extends AppCompatActivity {
-    private int legNumber = 0;
     private Trip trip = new Trip();
     private boolean existingTrip = false;
     private GtfsInfo routeInfo;
@@ -82,8 +81,10 @@ public class EditTripActivity extends AppCompatActivity {
             }
         });
         Iterator<TripLeg> iter = trip.iterLegs();
+        int legNumber = 0;
         while (iter.hasNext()) {
-            addLeg(iter.next());
+            addLeg(iter.next(), legNumber);
+            ++legNumber;
         }
     }
 
@@ -161,10 +162,10 @@ public class EditTripActivity extends AppCompatActivity {
     public void addNewLeg(View view) {
         TripLeg newLeg = new TripLeg();
         trip.addLeg(newLeg);
-        addLeg(newLeg);
+        addLeg(newLeg, trip.getSize() - 1);
     }
 
-    public void addLeg(final TripLeg tripLeg) {
+    public void addLeg(final TripLeg tripLeg, int legNumber) {
         LinearLayout legListLayout = (LinearLayout) findViewById(R.id.leg_list_layout);
         LinearLayout tripLegLayout = (LinearLayout) View.inflate(this, R.layout.trip_leg,
                                                                  legListLayout);
@@ -286,8 +287,6 @@ public class EditTripActivity extends AppCompatActivity {
                 tripLeg.setEndTime(newEndTime);
             }
         });
-
-        legNumber++;
     }
 
     private void updateRoutes(Spinner spinner, String mode, String existingRoute) {
