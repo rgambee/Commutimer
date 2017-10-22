@@ -58,13 +58,13 @@ public class EditTripActivity extends AppCompatActivity {
             setUpExistingTrip();
         } else {
             existingTrip = false;
+            listPresets();
             setUpNewTrip();
         }
     }
 
     void setUpNewTrip() {
         addNewLeg(new View(this));
-        listPresets();
 
         Button startButton = (Button) findViewById(R.id.edit_trip_main_button);
         startButton.setText(getString(R.string.button_start_trip));
@@ -134,7 +134,7 @@ public class EditTripActivity extends AppCompatActivity {
         });
     }
 
-    public Trip loadPreset(String presetName) {
+    public void loadPreset(String presetName) {
         File file = new File(new File(new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOCUMENTS),
                 getString(R.string.app_name)),
@@ -148,10 +148,14 @@ public class EditTripActivity extends AppCompatActivity {
                 line = br.readLine();
             }
             String presetString = sb.toString();
-            return new Trip(new JSONObject(presetString));
+            clearLegs();
+            trip = new Trip(new JSONObject(presetString));
+            setUpExistingTrip();
         } catch (IOException | JSONException | ParseException ex) {
             Log.e("CommutimerError", ex.toString());
-            return new Trip();
+            clearLegs();
+            trip = new Trip();
+            setUpNewTrip();
         }
     }
 
