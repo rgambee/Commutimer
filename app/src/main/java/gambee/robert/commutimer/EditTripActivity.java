@@ -22,12 +22,16 @@ import android.widget.TimePicker;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -130,8 +134,25 @@ public class EditTripActivity extends AppCompatActivity {
         });
     }
 
-    public void loadPreset(String presetName) {
-
+    public Trip loadPreset(String presetName) {
+        File file = new File(new File(new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS),
+                getString(R.string.app_name)),
+                getString(R.string.preset_directory)),
+                presetName);
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+            while (line != null) {
+                sb.append(line);
+                line = br.readLine();
+            }
+            String presetString = sb.toString();
+            return new Trip(new JSONObject(presetString));
+        } catch (IOException | JSONException | ParseException ex) {
+            Log.e("CommutimerError", ex.toString());
+            return new Trip();
+        }
     }
 
     public void savePreset(View view) {
