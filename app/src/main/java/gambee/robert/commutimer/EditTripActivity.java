@@ -289,6 +289,12 @@ public class EditTripActivity extends AppCompatActivity {
         });
     }
 
+    private void clearLegs() {
+        LinearLayout legListLayout = (LinearLayout) findViewById(R.id.leg_list_layout);
+        legListLayout.removeAllViews();
+        trip = new Trip();
+    }
+
     private void updateRoutes(Spinner spinner, String mode, String existingRoute) {
         ArrayList<String> routes = routeInfo.getRoutesForMode(mode);
         if (routes == null) {
