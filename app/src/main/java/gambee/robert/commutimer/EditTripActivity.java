@@ -119,7 +119,9 @@ public class EditTripActivity extends AppCompatActivity {
         File[] presets = presetDirectory.listFiles(new PresetFilter());
         ArrayList<String> presetNames = new ArrayList<>(presets.length);
         for (File file : presets) {
-            presetNames.add(file.getName());
+            String fileName = file.getName();
+            // Trim off file extension
+            presetNames.add(fileName.substring(0, fileName.lastIndexOf(".")));
         }
 
         final Spinner presetsSpinner = (Spinner) findViewById(R.id.preset_spinner);
@@ -140,6 +142,9 @@ public class EditTripActivity extends AppCompatActivity {
     }
 
     public void loadPreset(String presetName) {
+        if (!presetName.endsWith(".json")) {
+            presetName += ".json";
+        }
         File file = new File(new File(new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOCUMENTS),
                 getString(R.string.app_name)),
