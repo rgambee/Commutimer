@@ -48,7 +48,7 @@ public class EditTripActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_trip);
 
-        routeInfo =  new GtfsInfo(Volley.newRequestQueue(this));
+        routeInfo = new GtfsInfo(Volley.newRequestQueue(this));
 
         Intent intent = getIntent();
         Trip passedTrip = intent.getParcelableExtra("TripParcel");
@@ -204,7 +204,7 @@ public class EditTripActivity extends AppCompatActivity {
             }
         });
         int modePositon = modeAdapter.getPosition(tripLeg.getMode());
-        if (modePositon >= 0 ) {
+        if (modePositon >= 0) {
             modeSpinner.setSelection(modePositon);
         }
 
@@ -356,7 +356,7 @@ public class EditTripActivity extends AppCompatActivity {
         String fileName = (getString(R.string.trip_filename_prefix)
                 + dateFormat.format(trip.getLeg(0).getStartTime())
                 + getString(R.string.trip_filename_extension));
-        File file = new File(new File (new File(Environment.getExternalStoragePublicDirectory(
+        File file = new File(new File(new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOCUMENTS),
                 getString(R.string.app_name)),
                 getString(R.string.trip_save_directory)),
@@ -463,4 +463,3 @@ public class EditTripActivity extends AppCompatActivity {
         }
     }
 }
-
