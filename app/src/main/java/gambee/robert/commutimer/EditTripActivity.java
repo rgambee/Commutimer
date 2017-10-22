@@ -61,30 +61,35 @@ public class EditTripActivity extends AppCompatActivity {
             listPresets();
             setUpNewTrip();
         }
+        configMainButton();
+    }
+
+    void configMainButton() {
+        Button mainButton = (Button) findViewById(R.id.edit_trip_main_button);
+        if (existingTrip) {
+            mainButton.setText(getString(R.string.button_save));
+            mainButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    saveTrip(view);
+                }
+            });
+        } else {
+            mainButton.setText(getString(R.string.button_start_trip));
+            mainButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startNewTrip(view);
+                }
+            });
+        }
     }
 
     void setUpNewTrip() {
         addNewLeg(new View(this));
-
-        Button startButton = (Button) findViewById(R.id.edit_trip_main_button);
-        startButton.setText(getString(R.string.button_start_trip));
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startNewTrip(view);
-            }
-        });
     }
 
     void setUpExistingTrip() {
-        Button saveButton = (Button) findViewById(R.id.edit_trip_main_button);
-        saveButton.setText(getString(R.string.button_save));
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveTrip(view);
-            }
-        });
         Iterator<TripLeg> iter = trip.iterLegs();
         int legNumber = 0;
         while (iter.hasNext()) {
