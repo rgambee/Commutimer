@@ -23,8 +23,9 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -449,10 +450,9 @@ public class EditTripActivity extends AppCompatActivity {
 
     public void writeToFile(File file) {
         file.getParentFile().mkdirs();
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(trip.toJson().toString(4).getBytes("UTF-8"));
-            fos.close();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            bw.write(trip.toJson().toString(4));
+            bw.close();
             Snackbar snackbar = Snackbar.make(
                     findViewById(R.id.edit_trip_root_item),
                     getString(R.string.saved_message, file.getName()),
