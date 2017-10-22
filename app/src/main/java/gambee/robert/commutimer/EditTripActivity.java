@@ -155,28 +155,6 @@ public class EditTripActivity extends AppCompatActivity {
         }
     }
 
-    public void savePreset(View view) {
-        File file = new File(new File(new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS),
-                getString(R.string.app_name)),
-                getString(R.string.preset_directory)),
-                "preset0.json");
-        file.getParentFile().mkdirs();
-        try {
-            // TODO: BufferedFileWriter
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(trip.toJson().toString(4).getBytes("UTF-8"));
-            fos.close();
-            Snackbar snackbar = Snackbar.make(
-                    findViewById(R.id.edit_trip_root_item),
-                    getString(R.string.saved_message, file.getName()),
-                    Snackbar.LENGTH_LONG);
-            snackbar.show();
-        } catch (JSONException | IOException ex) {
-            Log.e("CommutimerError", ex.toString());
-        }
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /// Trip Editing
     ////////////////////////////////////////////////////////////////////////////////////////////////
