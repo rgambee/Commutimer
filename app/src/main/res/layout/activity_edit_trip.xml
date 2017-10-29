@@ -17,10 +17,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/preset_label"/>
                 <Spinner
                     android:id="@+id/preset_spinner"
                     android:layout_width="wrap_content"

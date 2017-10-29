@@ -127,7 +127,9 @@ public class EditTripActivity extends AppCompatActivity {
         final Spinner presetsSpinner = (Spinner) findViewById(R.id.preset_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, presetNames);
+        adapter.insert("Presets", 0);
         presetsSpinner.setAdapter(adapter);
+        presetsSpinner.setEnabled(presetNames.size() > 0);
         presetsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -150,6 +152,9 @@ public class EditTripActivity extends AppCompatActivity {
                 getString(R.string.app_name)),
                 getString(R.string.preset_directory)),
                 presetName);
+        if (!file.exists()) {
+            return;
+        }
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
