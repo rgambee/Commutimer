@@ -19,6 +19,7 @@ import java.util.Iterator;
 public class TravelingActivity extends AppCompatActivity {
     Trip trip = new Trip();
     private ArrayList<Chronometer> legTimers = new ArrayList<Chronometer>(3);
+    private ArrayList<LinearLayout> legLayouts = new ArrayList<>(3);
     private int currentLeg = -1;
     private boolean currentLegIsActive = false;
 
@@ -73,6 +74,7 @@ public class TravelingActivity extends AppCompatActivity {
             legLayout.addView(legLabel);
             legLayout.addView(modeLabel);
             legLayout.addView(timer);
+            legLayouts.add(legLayout);
             legListLayout.addView(legLayout);
 
             ++legNumber;
@@ -94,11 +96,15 @@ public class TravelingActivity extends AppCompatActivity {
                 Chronometer timer = legTimers.get(currentLeg);
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
+                legLayouts.get(currentLeg).setBackgroundColor(getResources().getColor(
+                        R.color.colorActiveLeg, null));
                 currentLegIsActive = true;
                 b.setText(getString(R.string.button_end_leg));
             } else {
                 trip.getLeg(currentLeg).setEndTime(new Date());
                 legTimers.get(currentLeg).stop();
+                legLayouts.get(currentLeg).setBackgroundColor(getResources().getColor(
+                        R.color.colorInactiveLeg, null));
                 ++currentLeg;
                 currentLegIsActive = false;
                 if (currentLeg < trip.getSize()) {
