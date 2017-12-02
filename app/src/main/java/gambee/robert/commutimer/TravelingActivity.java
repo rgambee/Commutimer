@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 public class TravelingActivity extends AppCompatActivity {
-    Trip trip = new Trip();
+    private Trip trip = new Trip();
     private ArrayList<Chronometer> legTimers = new ArrayList<Chronometer>(3);
     private ArrayList<LinearLayout> legLayouts = new ArrayList<>(3);
     private int currentLeg = -1;
