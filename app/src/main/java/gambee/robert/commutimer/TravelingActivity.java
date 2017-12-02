@@ -81,7 +81,7 @@ public class TravelingActivity extends AppCompatActivity {
         }
     }
 
-    public void beginTraveling(View view) {
+    public void updateTraveling(View view) {
         Button b = (Button) findViewById(R.id.traveling_button);
         if (currentLeg < 0) {
             Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
