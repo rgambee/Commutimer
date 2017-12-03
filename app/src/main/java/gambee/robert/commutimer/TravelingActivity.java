@@ -23,14 +23,32 @@ public class TravelingActivity extends AppCompatActivity {
     private int currentLeg = -1;
     private boolean currentLegIsActive = false;
 
+    private static final String TRIP_KEY = "Trip";
+    private static final String CURRENT_LEG_KEY = "CurrentLeg";
+    private static final String LEG_IS_ACTIVE_KEY = "LegIsActive";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_traveling);
 
-        Intent intent = getIntent();
-        trip = intent.getParcelableExtra("TripParcel");
-        createNewTravelingLayout();
+        if (savedInstanceState != null) {
+            trip = savedInstanceState.getParcelable(TRIP_KEY);
+            currentLeg = savedInstanceState.getInt(CURRENT_LEG_KEY);
+            currentLegIsActive = savedInstanceState.getBoolean(LEG_IS_ACTIVE_KEY);
+        } else {
+            Intent intent = getIntent();
+            trip = intent.getParcelableExtra("TripParcel");
+            createNewTravelingLayout();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(TRIP_KEY, trip);
+        outState.putInt(CURRENT_LEG_KEY, currentLeg);
+        outState.putBoolean(LEG_IS_ACTIVE_KEY, currentLegIsActive);
+        super.onSaveInstanceState(outState);
     }
 
     public void createNewTravelingLayout() {
