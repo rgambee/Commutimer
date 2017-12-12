@@ -32,12 +32,13 @@ public class TravelingActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             trip = savedInstanceState.getParcelable(TRIP_KEY);
+            createNewTravelingLayout(trip);
             currentLeg = savedInstanceState.getInt(CURRENT_LEG_KEY);
             currentLegIsActive = savedInstanceState.getBoolean(LEG_IS_ACTIVE_KEY);
         } else {
             Intent intent = getIntent();
             trip = intent.getParcelableExtra("TripParcel");
-            createNewTravelingLayout();
+            createNewTravelingLayout(trip);
         }
     }
 
@@ -49,7 +50,7 @@ public class TravelingActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    public void createNewTravelingLayout() {
+    public void createNewTravelingLayout(Trip trip) {
         legTimers.clear();
         legLayouts.clear();
         LinearLayout legListLayout = (LinearLayout) findViewById(R.id.traveling_leg_list_layout);
