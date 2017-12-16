@@ -38,12 +38,17 @@ public class TravelingActivity extends AppCompatActivity {
             currentLeg = savedInstanceState.getInt(CURRENT_LEG_KEY);
             currentLegIsActive = savedInstanceState.getBoolean(LEG_IS_ACTIVE_KEY);
             elapsedTimes = (ArrayList<Long>) savedInstanceState.getSerializable(ELAPSED_TIMES_KEY);
+            Chronometer globalTimer = (Chronometer) findViewById(R.id.trip_timer);
+            globalTimer.setBase(
+                    SystemClock.elapsedRealtime() - elapsedTimes.get(elapsedTimes.size() - 1)
+            );
+            globalTimer.start();
             for (int i = 0; i < legTimers.size(); ++i) {
                 legTimers.get(i).setBase(SystemClock.elapsedRealtime() - elapsedTimes.get(i));
             }
-            ((Chronometer) findViewById(R.id.trip_timer)).setBase(
-                    SystemClock.elapsedRealtime() - elapsedTimes.get(elapsedTimes.size() - 1)
-            );
+            if (currentLegIsActive) {
+                legTimers.get(currentLeg).start();
+            }
         } else {
             Intent intent = getIntent();
             trip = intent.getParcelableExtra("TripParcel");
@@ -58,10 +63,12 @@ public class TravelingActivity extends AppCompatActivity {
         outState.putBoolean(LEG_IS_ACTIVE_KEY, currentLegIsActive);
         if (currentLegIsActive) {
             long currentLegElapsed = SystemClock.elapsedRealtime() - legTimers.get(currentLeg).getBase();
+            legTimers.get(currentLeg).stop();
             elapsedTimes.set(currentLeg, currentLegElapsed);
         }
-
-        long globalTimerBase = ((Chronometer) findViewById(R.id.trip_timer)).getBase();
+        Chronometer globalTimer = (Chronometer) findViewById(R.id.trip_timer);
+        long globalTimerBase = globalTimer.getBase();
+        globalTimer.stop();
         elapsedTimes.set(elapsedTimes.size() - 1, SystemClock.elapsedRealtime() - globalTimerBase);
         outState.putSerializable(ELAPSED_TIMES_KEY, elapsedTimes);
         super.onSaveInstanceState(outState);
