@@ -41,6 +41,9 @@ public class TravelingActivity extends AppCompatActivity {
             for (int i = 0; i < legTimers.size(); ++i) {
                 legTimers.get(i).setBase(SystemClock.elapsedRealtime() - elapsedTimes.get(i));
             }
+            ((Chronometer) findViewById(R.id.trip_timer)).setBase(
+                    SystemClock.elapsedRealtime() - elapsedTimes.get(elapsedTimes.size() - 1)
+            );
         } else {
             Intent intent = getIntent();
             trip = intent.getParcelableExtra("TripParcel");
@@ -53,6 +56,13 @@ public class TravelingActivity extends AppCompatActivity {
         outState.putParcelable(TRIP_KEY, trip);
         outState.putInt(CURRENT_LEG_KEY, currentLeg);
         outState.putBoolean(LEG_IS_ACTIVE_KEY, currentLegIsActive);
+        if (currentLegIsActive) {
+            long currentLegElapsed = SystemClock.elapsedRealtime() - legTimers.get(currentLeg).getBase();
+            elapsedTimes.set(currentLeg, currentLegElapsed);
+        }
+
+        long globalTimerBase = ((Chronometer) findViewById(R.id.trip_timer)).getBase();
+        elapsedTimes.set(elapsedTimes.size() - 1, SystemClock.elapsedRealtime() - globalTimerBase);
         outState.putSerializable(ELAPSED_TIMES_KEY, elapsedTimes);
         super.onSaveInstanceState(outState);
     }
@@ -86,6 +96,8 @@ public class TravelingActivity extends AppCompatActivity {
             elapsedTimes.add(0L);
             ++legNumber;
         }
+        // Add element to represent global Chronometer
+        elapsedTimes.add(0L);
     }
 
     public void updateTraveling(View view) {
