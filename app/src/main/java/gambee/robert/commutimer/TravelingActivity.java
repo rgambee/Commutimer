@@ -16,14 +16,16 @@ import java.util.Iterator;
 
 public class TravelingActivity extends AppCompatActivity {
     private Trip trip = new Trip();
-    private ArrayList<Chronometer> legTimers = new ArrayList<Chronometer>(3);
     private ArrayList<LinearLayout> legLayouts = new ArrayList<>(3);
+    private ArrayList<Chronometer> legTimers = new ArrayList<>(3);
+    private ArrayList<Long> elapsedTimes = new ArrayList<>(3);
     private int currentLeg = -1;
     private boolean currentLegIsActive = false;
 
     private static final String TRIP_KEY = "Trip";
     private static final String CURRENT_LEG_KEY = "CurrentLeg";
     private static final String LEG_IS_ACTIVE_KEY = "LegIsActive";
+    private static final String ELAPSED_TIMES_KEY = "ElapsedTimes";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,10 @@ public class TravelingActivity extends AppCompatActivity {
             createNewTravelingLayout(trip);
             currentLeg = savedInstanceState.getInt(CURRENT_LEG_KEY);
             currentLegIsActive = savedInstanceState.getBoolean(LEG_IS_ACTIVE_KEY);
+            elapsedTimes = (ArrayList<Long>) savedInstanceState.getSerializable(ELAPSED_TIMES_KEY);
+            for (int i = 0; i < legTimers.size(); ++i) {
+                legTimers.get(i).setBase(SystemClock.elapsedRealtime() - elapsedTimes.get(i));
+            }
         } else {
             Intent intent = getIntent();
             trip = intent.getParcelableExtra("TripParcel");
@@ -47,6 +53,7 @@ public class TravelingActivity extends AppCompatActivity {
         outState.putParcelable(TRIP_KEY, trip);
         outState.putInt(CURRENT_LEG_KEY, currentLeg);
         outState.putBoolean(LEG_IS_ACTIVE_KEY, currentLegIsActive);
+        outState.putSerializable(ELAPSED_TIMES_KEY, elapsedTimes);
         super.onSaveInstanceState(outState);
     }
 
@@ -74,8 +81,9 @@ public class TravelingActivity extends AppCompatActivity {
             legLabel.setText(getString(R.string.leg_label, legNumber));
             modeLabel.setText(t.getMode());
 
-            legTimers.add(timer);
             legLayouts.add(legLayout);
+            legTimers.add(timer);
+            elapsedTimes.add(0L);
             ++legNumber;
         }
     }
@@ -102,6 +110,8 @@ public class TravelingActivity extends AppCompatActivity {
             } else {
                 trip.getLeg(currentLeg).setEndTime(new Date());
                 legTimers.get(currentLeg).stop();
+                long elapsed = SystemClock.elapsedRealtime() - legTimers.get(currentLeg).getBase();
+                elapsedTimes.set(currentLeg, elapsed);
                 legLayouts.get(currentLeg).setBackgroundColor(getResources().getColor(
                         R.color.colorInactiveLeg, null));
                 ++currentLeg;
