@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -33,26 +34,13 @@ public class TravelingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_traveling);
 
         if (savedInstanceState != null) {
-            trip = savedInstanceState.getParcelable(TRIP_KEY);
-            createNewTravelingLayout(trip);
-            currentLeg = savedInstanceState.getInt(CURRENT_LEG_KEY);
-            currentLegIsActive = savedInstanceState.getBoolean(LEG_IS_ACTIVE_KEY);
-            elapsedTimes = (ArrayList<Long>) savedInstanceState.getSerializable(ELAPSED_TIMES_KEY);
-            Chronometer globalTimer = (Chronometer) findViewById(R.id.trip_timer);
-            globalTimer.setBase(
-                    SystemClock.elapsedRealtime() - elapsedTimes.get(elapsedTimes.size() - 1)
-            );
-            globalTimer.start();
-            for (int i = 0; i < legTimers.size(); ++i) {
-                legTimers.get(i).setBase(SystemClock.elapsedRealtime() - elapsedTimes.get(i));
-            }
-            if (currentLegIsActive) {
-                legTimers.get(currentLeg).start();
-            }
+            loadInstanceState(savedInstanceState);
         } else {
             Intent intent = getIntent();
             trip = intent.getParcelableExtra("TripParcel");
             createNewTravelingLayout(trip);
+            // elapsedTimes has one extra element to hold global timer's state
+            elapsedTimes = new ArrayList<>(Collections.nCopies(trip.getSize() + 1, 0L));
         }
     }
 
@@ -75,6 +63,29 @@ public class TravelingActivity extends AppCompatActivity {
         }
         outState.putSerializable(ELAPSED_TIMES_KEY, elapsedTimes);
         super.onSaveInstanceState(outState);
+    }
+
+    public void loadInstanceState(Bundle instate) {
+        trip = instate.getParcelable(TRIP_KEY);
+        currentLeg = instate.getInt(CURRENT_LEG_KEY);
+        currentLegIsActive = instate.getBoolean(LEG_IS_ACTIVE_KEY);
+        elapsedTimes = (ArrayList<Long>) instate.getSerializable(ELAPSED_TIMES_KEY);
+        createNewTravelingLayout(trip);
+        Chronometer globalTimer = (Chronometer) findViewById(R.id.trip_timer);
+        globalTimer.setBase(
+                SystemClock.elapsedRealtime() - elapsedTimes.get(elapsedTimes.size() - 1)
+        );
+        if (currentLeg < trip.getSize() || (currentLeg == 0 && currentLegIsActive)) {
+            globalTimer.start();
+        }
+        for (int i = 0; i < legTimers.size(); ++i) {
+            legTimers.get(i).setBase(SystemClock.elapsedRealtime() - elapsedTimes.get(i));
+            if (i == currentLeg && currentLegIsActive) {
+                legTimers.get(i).start();
+            }
+        }
+        setButtonText();
+        setBackgroundColors();
     }
 
     public void createNewTravelingLayout(Trip trip) {
@@ -103,11 +114,8 @@ public class TravelingActivity extends AppCompatActivity {
 
             legLayouts.add(legLayout);
             legTimers.add(timer);
-            elapsedTimes.add(0L);
             ++legNumber;
         }
-        // Add element to represent global Chronometer
-        elapsedTimes.add(0L);
     }
 
     public void updateTraveling(View view) {
@@ -156,7 +164,8 @@ public class TravelingActivity extends AppCompatActivity {
             }
             Chronometer previousTimer = legTimers.get(currentLeg - 1);
             previousTimer.stop();
-            elapsedTimes.set(currentLeg, SystemClock.elapsedRealtime() - previousTimer.getBase());
+            elapsedTimes.set(currentLeg - 1,
+                             SystemClock.elapsedRealtime() - previousTimer.getBase());
         }
     }
 
