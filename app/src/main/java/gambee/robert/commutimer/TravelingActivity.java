@@ -19,7 +19,7 @@ public class TravelingActivity extends AppCompatActivity {
     private ArrayList<LinearLayout> legLayouts = new ArrayList<>(3);
     private ArrayList<Chronometer> legTimers = new ArrayList<>(3);
     private ArrayList<Long> elapsedTimes = new ArrayList<>(3);
-    private int currentLeg = -1;
+    private int currentLeg = 0;
     private boolean currentLegIsActive = false;
 
     private static final String TRIP_KEY = "Trip";
@@ -66,10 +66,13 @@ public class TravelingActivity extends AppCompatActivity {
             legTimers.get(currentLeg).stop();
             elapsedTimes.set(currentLeg, currentLegElapsed);
         }
-        Chronometer globalTimer = (Chronometer) findViewById(R.id.trip_timer);
-        long globalTimerBase = globalTimer.getBase();
-        globalTimer.stop();
-        elapsedTimes.set(elapsedTimes.size() - 1, SystemClock.elapsedRealtime() - globalTimerBase);
+        if (currentLeg < trip.getSize()) {
+            Chronometer globalTimer = (Chronometer) findViewById(R.id.trip_timer);
+            long globalTimerBase = globalTimer.getBase();
+            globalTimer.stop();
+            elapsedTimes.set(elapsedTimes.size() - 1,
+                             SystemClock.elapsedRealtime() - globalTimerBase);
+        }
         outState.putSerializable(ELAPSED_TIMES_KEY, elapsedTimes);
         super.onSaveInstanceState(outState);
     }
@@ -108,49 +111,75 @@ public class TravelingActivity extends AppCompatActivity {
     }
 
     public void updateTraveling(View view) {
-        Button b = (Button) findViewById(R.id.traveling_button);
-        if (currentLeg < 0) {
-            Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
-            timer.setBase(SystemClock.elapsedRealtime());
-            timer.start();
-            ++currentLeg;
-        }
-
         if (currentLeg < trip.getSize()) {
             if (!currentLegIsActive) {
-                trip.getLeg(currentLeg).setStartTime(new Date());
-                Chronometer timer = legTimers.get(currentLeg);
-                timer.setBase(SystemClock.elapsedRealtime());
-                timer.start();
-                legLayouts.get(currentLeg).setBackgroundColor(getResources().getColor(
-                        R.color.colorActiveLeg, null));
                 currentLegIsActive = true;
-                b.setText(getString(R.string.button_end_leg));
             } else {
-                trip.getLeg(currentLeg).setEndTime(new Date());
-                legTimers.get(currentLeg).stop();
-                long elapsed = SystemClock.elapsedRealtime() - legTimers.get(currentLeg).getBase();
-                elapsedTimes.set(currentLeg, elapsed);
-                legLayouts.get(currentLeg).setBackgroundColor(getResources().getColor(
-                        R.color.colorInactiveLeg, null));
                 ++currentLeg;
                 currentLegIsActive = false;
-                if (currentLeg < trip.getSize()) {
-                    b.setText(getString(R.string.button_start_leg));
-                } else {
-                    Chronometer timer = (Chronometer) findViewById(R.id.trip_timer);
-                    timer.stop();
-                    b.setText(getString(R.string.button_continue));
-                    b.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View view) {
-                            Intent intent = new Intent(TravelingActivity.this,
-                                                       EditTripActivity.class);
-                            intent.putExtra("TripParcel", trip);
-                            startActivity(intent);
-                        }
-                    });
-                }
             }
+            setTripStartEnd();
+            startStopTimers();
+            setButtonText();
+            setBackgroundColors();
+        } else {
+            Intent intent = new Intent(TravelingActivity.this,
+                                       EditTripActivity.class);
+            intent.putExtra("TripParcel", trip);
+            startActivity(intent);
+        }
+    }
+
+    void setTripStartEnd() {
+        if (currentLegIsActive) {
+            trip.getLeg(currentLeg).setStartTime(new Date());
+        } else {
+            trip.getLeg(currentLeg - 1).setEndTime(new Date());
+        }
+    }
+
+    void startStopTimers() {
+        Chronometer globalTimer = (Chronometer) findViewById(R.id.trip_timer);
+        if (currentLegIsActive) {
+            if (currentLeg == 0) {
+                globalTimer.setBase(SystemClock.elapsedRealtime());
+                globalTimer.start();
+            }
+            Chronometer currentTimer = legTimers.get(currentLeg);
+            currentTimer.setBase(SystemClock.elapsedRealtime());
+            currentTimer.start();
+        } else {
+            if (currentLeg == trip.getSize()) {
+                globalTimer.stop();
+                elapsedTimes.set(trip.getSize(),
+                                 SystemClock.elapsedRealtime() - globalTimer.getBase());
+            }
+            Chronometer previousTimer = legTimers.get(currentLeg - 1);
+            previousTimer.stop();
+            elapsedTimes.set(currentLeg, SystemClock.elapsedRealtime() - previousTimer.getBase());
+        }
+    }
+
+    void setButtonText() {
+        Button mainButton = (Button) findViewById(R.id.traveling_button);
+        if (currentLeg < trip.getSize()) {
+            if (currentLegIsActive) {
+                mainButton.setText(getString(R.string.button_end_leg));
+            } else {
+                mainButton.setText(getString(R.string.button_start_leg));
+            }
+        } else {
+            mainButton.setText(getString(R.string.button_continue));
+        }
+    }
+
+    void setBackgroundColors() {
+        for (int i = 0; i < legLayouts.size(); ++i) {
+            int colorID = R.color.colorInactiveLeg;
+            if (i == currentLeg && currentLegIsActive) {
+                colorID = R.color.colorActiveLeg;
+            }
+            legLayouts.get(i).setBackgroundColor(getResources().getColor(colorID, null));
         }
     }
 }
