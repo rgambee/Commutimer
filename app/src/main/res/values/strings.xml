@@ -32,6 +32,10 @@
     <string name="button_end_leg">End Leg</string>
     <string name="button_continue">Continue</string>
 
+    <string name="back_popup_message">Would you like to go back?</string>
+    <string name="back_popup_yes">Yes</string>
+    <string name="back_popup_no">No</string>
+
     <!-- Edit trip activity -->
     <string name="trip_save_directory">CommutimerTrips</string>
     <string name="trip_filename_prefix">Trip_</string>
