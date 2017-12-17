@@ -38,7 +38,7 @@
     <string name="trip_filename_extension">.json</string>
     <string name="saved_message">Saved trip to %s</string>
 
-    <string name="popup_message">File already exists. What would you like to do?</string>
+    <string name="overwrite_popup_message">File already exists. What would you like to do?</string>
     <string name="button_save">Save</string>
     <string name="button_overwrite">Overwrite</string>
     <string name="button_rename">Rename</string>

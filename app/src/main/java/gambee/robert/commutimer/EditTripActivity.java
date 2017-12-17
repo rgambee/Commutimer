@@ -409,7 +409,7 @@ public class EditTripActivity extends AppCompatActivity {
         popupLayout.setBackgroundColor(0xffeff0f1);
 
         TextView popupMessage = new TextView(this);
-        popupMessage.setText(getString(R.string.popup_message));
+        popupMessage.setText(getString(R.string.overwrite_popup_message));
         popupLayout.addView(popupMessage);
 
         final EditText newFilenameEditText = new EditText(this);
