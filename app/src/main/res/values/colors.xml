@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorActiveLeg">@color/button_material_light</color>
     <color name="colorInactiveLeg">@color/background_material_light</color>
+    <color name="colorPopup">#ffeff0f1</color>
 </resources>

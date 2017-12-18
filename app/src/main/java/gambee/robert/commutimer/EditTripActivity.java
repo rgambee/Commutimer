@@ -406,7 +406,7 @@ public class EditTripActivity extends AppCompatActivity {
         popupLayout.setPadding(HOR_MARGIN, VERT_MARGIN, HOR_MARGIN, VERT_MARGIN);
         popupLayout.setLayoutParams(params);
         popupLayout.setOrientation(LinearLayout.VERTICAL);
-        popupLayout.setBackgroundColor(0xffeff0f1);
+        popupLayout.setBackgroundColor(getColor(R.color.colorPopup));
 
         TextView popupMessage = new TextView(this);
         popupMessage.setText(getString(R.string.overwrite_popup_message));
