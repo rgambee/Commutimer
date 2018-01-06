@@ -9,45 +9,52 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:orientation="vertical">
-        <Button
-            android:id="@+id/traveling_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_vertical_margin"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-            android:text="@string/button_go"
-            android:onClick="updateTraveling"/>
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/traveling_activity_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textAlignment="gravity"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-                android:text="@string/total_timer_label"/>
-
-            <Chronometer
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/traveling_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_vertical_margin"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:id="@+id/trip_timer"/>
-        </LinearLayout>
-    </LinearLayout>
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:text="@string/button_go"
+                android:onClick="updateTraveling"/>
 
-    <LinearLayout
-        android:id="@+id/traveling_leg_list_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/activity_horizontal_margin">
+            <LinearLayout
+                android:id="@+id/total_timer_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/total_timers_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textAlignment="gravity"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:text="@string/total_timer_label"/>
+
+                <Chronometer
+                    android:id="@+id/trip_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/traveling_leg_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/activity_horizontal_margin">
+        </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
