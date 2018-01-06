@@ -49,6 +49,10 @@ public class TravelingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if (currentLeg == 0 && !currentLegIsActive) {
+            // Trip isn't active, so there's nothing to lose by going back
+            super.onBackPressed();
+        }
         final int WRAP_CONTENT = LinearLayout.LayoutParams.WRAP_CONTENT;
         final int HOR_MARGIN = getResources().getDimensionPixelOffset(
                 R.dimen.activity_horizontal_margin);
