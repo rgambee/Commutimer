@@ -2,15 +2,12 @@ package gambee.robert.commutimer;
 
 import android.content.Intent;
 import android.os.SystemClock;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,7 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 
-public class TravelingActivity extends AppCompatActivity {
+public class TravelingActivity extends BackConfirmationActivity {
     private Trip trip = new Trip();
     private ArrayList<LinearLayout> legLayouts = new ArrayList<>(3);
     private ArrayList<Chronometer> legTimers = new ArrayList<>(3);
@@ -49,60 +46,8 @@ public class TravelingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (currentLeg == 0 && !currentLegIsActive) {
-            // Trip isn't active, so there's nothing to lose by going back
-            super.onBackPressed();
-        }
-        final int WRAP_CONTENT = LinearLayout.LayoutParams.WRAP_CONTENT;
-        final int HOR_MARGIN = getResources().getDimensionPixelOffset(
-                R.dimen.activity_horizontal_margin);
-        final int VERT_MARGIN = getResources().getDimensionPixelOffset(
-                R.dimen.activity_vertical_margin);
-
-        LinearLayout popupLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                WRAP_CONTENT, WRAP_CONTENT);
-        popupLayout.setPadding(HOR_MARGIN, VERT_MARGIN, HOR_MARGIN, VERT_MARGIN);
-        popupLayout.setLayoutParams(params);
-        popupLayout.setOrientation(LinearLayout.VERTICAL);
-        popupLayout.setBackgroundColor(getColor(R.color.colorPopup));
-
-        TextView popupMessage = new TextView(this);
-        popupMessage.setText(getString(R.string.back_popup_message));
-        popupLayout.addView(popupMessage);
-
-        LinearLayout buttonLayout = new LinearLayout(this);
-        buttonLayout.setLayoutParams(params);
-        buttonLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-        final Button yesButton = new Button(this);
-        yesButton.setText(getString(R.string.back_popup_yes));
-        final Button noButton = new Button(this);
-        noButton.setText(getString(R.string.back_popup_no));
-
-        buttonLayout.addView(yesButton);
-        buttonLayout.addView(noButton);
-        popupLayout.addView(buttonLayout);
-
-        final PopupWindow popup = new PopupWindow(popupLayout, WRAP_CONTENT, WRAP_CONTENT, true);
-        CoordinatorLayout editTripLayout = (CoordinatorLayout) findViewById(
-                R.id.traveling_activity_root_item);
-        popup.showAtLocation(editTripLayout, Gravity.CENTER, 0, 0);
-
-        yesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popup.dismiss();
-                TravelingActivity.super.onBackPressed();
-            }
-        });
-
-        noButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popup.dismiss();
-            }
-        });
+        super.onBackPressed(currentLeg > 0 || currentLegIsActive,
+                            (CoordinatorLayout) findViewById(R.id.traveling_activity_root_item));
     }
 
     @Override

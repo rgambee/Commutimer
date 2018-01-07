@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Environment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -38,7 +37,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
-public class EditTripActivity extends AppCompatActivity {
+public class EditTripActivity extends BackConfirmationActivity {
     private Trip trip = new Trip();
     private boolean existingTrip = false;
     private GtfsInfo routeInfo;
@@ -96,6 +95,12 @@ public class EditTripActivity extends AppCompatActivity {
             addLeg(iter.next(), legNumber);
             ++legNumber;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed(existingTrip,
+                            (CoordinatorLayout) findViewById(R.id.edit_trip_root_item));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
