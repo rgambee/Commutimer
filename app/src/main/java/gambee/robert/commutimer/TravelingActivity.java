@@ -57,13 +57,11 @@ public class TravelingActivity extends BackConfirmationActivity {
         outState.putBoolean(LEG_IS_ACTIVE_KEY, currentLegIsActive);
         if (currentLegIsActive) {
             long currentLegElapsed = SystemClock.elapsedRealtime() - legTimers.get(currentLeg).getBase();
-            legTimers.get(currentLeg).stop();
             elapsedTimes.set(currentLeg, currentLegElapsed);
         }
         if (currentLeg < trip.getSize()) {
             Chronometer globalTimer = (Chronometer) findViewById(R.id.trip_timer);
             long globalTimerBase = globalTimer.getBase();
-            globalTimer.stop();
             elapsedTimes.set(elapsedTimes.size() - 1,
                              SystemClock.elapsedRealtime() - globalTimerBase);
         }
