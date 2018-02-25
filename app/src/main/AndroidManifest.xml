@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TravelingActivity">
+            android:name=".TravelingActivity"
+            android:launchMode="singleTop">
         </activity>
         <activity
             android:name=".EditTripActivity">

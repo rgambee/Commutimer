@@ -1,9 +1,12 @@
 package gambee.robert.commutimer;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -27,6 +30,7 @@ public class TravelingActivity extends BackConfirmationActivity {
     private static final String CURRENT_LEG_KEY = "CurrentLeg";
     private static final String LEG_IS_ACTIVE_KEY = "LegIsActive";
     private static final String ELAPSED_TIMES_KEY = "ElapsedTimes";
+    private static final int NOTIFICATION_ID = 1234;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,8 @@ public class TravelingActivity extends BackConfirmationActivity {
             // elapsedTimes has one extra element to hold global timer's state
             elapsedTimes = new ArrayList<>(Collections.nCopies(trip.getSize() + 1, 0L));
         }
+        // Create notification for transitioning legs
+        setNotification();
     }
 
     @Override
@@ -90,6 +96,20 @@ public class TravelingActivity extends BackConfirmationActivity {
         }
         setButtonText();
         setBackgroundColors();
+    }
+
+    public void setNotification() {
+        Intent tapIntent = new Intent(this, TravelingActivity.class);
+        PendingIntent pendingTapIntent = PendingIntent.getActivity(this, 0,
+                                                                   tapIntent, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                getApplicationContext());
+        builder.setSmallIcon(R.drawable.notification_icon).setContentTitle("Commutimer");
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setOnlyAlertOnce(true);
+        builder.setContentIntent(pendingTapIntent);
+        NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
+        manager.notify(NOTIFICATION_ID, builder.build());
     }
 
     public void createNewTravelingLayout(Trip trip) {
