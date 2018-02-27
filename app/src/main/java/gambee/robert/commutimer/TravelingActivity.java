@@ -36,15 +36,17 @@ public class TravelingActivity extends BackConfirmationActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_traveling);
-
         if (savedInstanceState != null) {
             loadInstanceState(savedInstanceState);
         } else {
             Intent intent = getIntent();
-            trip = intent.getParcelableExtra("TripParcel");
-            createNewTravelingLayout(trip);
-            // elapsedTimes has one extra element to hold global timer's state
-            elapsedTimes = new ArrayList<>(Collections.nCopies(trip.getSize() + 1, 0L));
+            Trip tripExtra = intent.getParcelableExtra("TripParcel");
+            if (tripExtra != null) {
+                trip = intent.getParcelableExtra("TripParcel");
+                createNewTravelingLayout(trip);
+                // elapsedTimes has one extra element to hold global timer's state
+                elapsedTimes = new ArrayList<>(Collections.nCopies(trip.getSize() + 1, 0L));
+            }
         }
         // Create notification for transitioning legs
         setNotification();
