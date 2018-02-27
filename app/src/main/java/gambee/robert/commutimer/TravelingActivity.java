@@ -100,16 +100,43 @@ public class TravelingActivity extends BackConfirmationActivity {
         setBackgroundColors();
     }
 
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.getBooleanExtra("gambee.robert.commutimer.TransitionFlag",
+                                   false)) {
+            updateTraveling(new View(this));
+        }
+    }
+
     public void setNotification() {
-        Intent tapIntent = new Intent(this, TravelingActivity.class);
-        PendingIntent pendingTapIntent = PendingIntent.getActivity(this, 0,
-                                                                   tapIntent, 0);
+        Intent tapIntent = new Intent(this, TravelingActivity.class).addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingTapIntent = PendingIntent.getActivity(
+                this, 0, tapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent transitionIntent = new Intent(this, TravelingActivity.class).addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        transitionIntent.putExtra("gambee.robert.commutimer.TransitionFlag", true);
+        PendingIntent pendingTransitionIntent = PendingIntent.getActivity(
+                this, 1, transitionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        String actionButtonTitle = "Start";
+        if (currentLegIsActive) {
+            actionButtonTitle = "End";
+        }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 getApplicationContext());
-        builder.setSmallIcon(R.drawable.notification_icon).setContentTitle("Commutimer");
-        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setOnlyAlertOnce(true);
-        builder.setContentIntent(pendingTapIntent);
+        builder.setSmallIcon(R.drawable.notification_icon)
+                .setContentTitle("Commutimer")
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setOnlyAlertOnce(true)
+                .setContentIntent(pendingTapIntent);
+        if (currentLeg < trip.getSize()) {
+            builder.addAction(R.drawable.notification_icon, actionButtonTitle,
+                              pendingTransitionIntent);
+        }
         NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
         manager.notify(NOTIFICATION_ID, builder.build());
     }
@@ -156,6 +183,7 @@ public class TravelingActivity extends BackConfirmationActivity {
             startStopTimers();
             setButtonText();
             setBackgroundColors();
+            setNotification();
         } else {
             Intent intent = new Intent(TravelingActivity.this,
                                        EditTripActivity.class);
