@@ -53,6 +53,12 @@ public class TravelingActivity extends BackConfirmationActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        clearNotification();
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed(currentLeg > 0 || currentLegIsActive,
                             (CoordinatorLayout) findViewById(R.id.traveling_activity_root_item));
@@ -141,6 +147,10 @@ public class TravelingActivity extends BackConfirmationActivity {
         manager.notify(NOTIFICATION_ID, builder.build());
     }
 
+    public void clearNotification() {
+        NotificationManagerCompat.from(getApplicationContext()).cancel(NOTIFICATION_ID);
+    }
+
     public void createNewTravelingLayout(Trip trip) {
         legTimers.clear();
         legLayouts.clear();
@@ -185,6 +195,7 @@ public class TravelingActivity extends BackConfirmationActivity {
             setBackgroundColors();
             setNotification();
         } else {
+            clearNotification();
             Intent intent = new Intent(TravelingActivity.this,
                                        EditTripActivity.class);
             intent.putExtra("TripParcel", trip);
