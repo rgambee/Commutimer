@@ -3,7 +3,7 @@
     style="?android:attr/spinnerDropDownItemStyle"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:maxLines="1"
+    android:singleLine="true"
     android:ellipsize="start"
     android:padding="@dimen/spinner_dropdown_padding">
 </TextView>
