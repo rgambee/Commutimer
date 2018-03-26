@@ -212,7 +212,7 @@ public class EditTripActivity extends BackConfirmationActivity {
         legLabel.setText(getString(R.string.leg_label, legNumber));
 
         ArrayAdapter<CharSequence> modeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.leg_types, R.layout.truncated_spinner_text);
+                R.array.leg_types, R.layout.spinner_text_ellipsize_end);
         modeSpinner.setAdapter(modeAdapter);
         modeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -328,7 +328,7 @@ public class EditTripActivity extends BackConfirmationActivity {
             spinner.setEnabled(true);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, R.layout.truncated_spinner_text, routes);
+                this, R.layout.spinner_text_ellipsize_end, routes);
         spinner.setAdapter(adapter);
         int routePosition = adapter.getPosition(existingRoute);
         if (routePosition >= 0) {
@@ -345,7 +345,7 @@ public class EditTripActivity extends BackConfirmationActivity {
             spinner.setEnabled(true);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, R.layout.truncated_spinner_text, directions);
+                this, R.layout.spinner_text_ellipsize_end, directions);
         spinner.setAdapter(adapter);
         int directionPosition = adapter.getPosition(existingDirection);
         if (directionPosition >= 0) {
@@ -362,7 +362,7 @@ public class EditTripActivity extends BackConfirmationActivity {
             spinner.setEnabled(true);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, R.layout.truncated_spinner_text, stops);
+                this, R.layout.spinner_text_ellipsize_start, stops);
         spinner.setAdapter(adapter);
         int stopPosition = adapter.getPosition(existingStop);
         if (stopPosition >= 0) {
