@@ -32,6 +32,7 @@ public class TravelingActivity extends BackConfirmationActivity {
     private static final String LEG_IS_ACTIVE_KEY = "LegIsActive";
     private static final String ELAPSED_TIMES_KEY = "ElapsedTimes";
     private static final int NOTIFICATION_ID = 1234;
+    private static final String NOTIFICATION_INTENT_EXTRA_KEY = "gambee.robert.commutimer.TransitionFlag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,7 @@ public class TravelingActivity extends BackConfirmationActivity {
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (intent.getBooleanExtra("gambee.robert.commutimer.TransitionFlag",
+        if (intent.getBooleanExtra(NOTIFICATION_INTENT_EXTRA_KEY,
                                    false)) {
             updateTraveling(new View(this));
         }
@@ -119,21 +120,22 @@ public class TravelingActivity extends BackConfirmationActivity {
     public void setNotification() {
         Intent tapIntent = new Intent(this, TravelingActivity.class).addFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK);
-        tapIntent.putExtra("gambee.robert.commutimer.TransitionFlag",
+        tapIntent.putExtra(NOTIFICATION_INTENT_EXTRA_KEY,
                            currentLeg < trip.getSize());
         PendingIntent pendingTapIntent = PendingIntent.getActivity(
                 this, 0, tapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         String actionText = "";
         if (currentLeg < trip.getSize()) {
-            actionText = currentLegIsActive ? "End" : "Start";
+            actionText = currentLegIsActive ? getString(R.string.button_end_leg)
+                                            : getString(R.string.button_start_leg);
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 getApplicationContext());
         builder.setCategory(Notification.CATEGORY_SERVICE)
                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-               .setContentTitle("Commutimer")
+               .setContentTitle(getString(R.string.app_name))
                .setSmallIcon(R.drawable.notification_icon)
                .setContentText(actionText)
                .setOnlyAlertOnce(true)
