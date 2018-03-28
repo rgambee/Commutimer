@@ -1,5 +1,6 @@
 package gambee.robert.commutimer;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.SystemClock;
@@ -135,7 +136,8 @@ public class TravelingActivity extends BackConfirmationActivity {
                 .setContentText(actionText)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setOnlyAlertOnce(true)
-                .setContentIntent(pendingTapIntent);
+                .setContentIntent(pendingTapIntent)
+                .setCategory(Notification.CATEGORY_SERVICE);
         NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
         manager.notify(NOTIFICATION_ID, builder.build());
     }
