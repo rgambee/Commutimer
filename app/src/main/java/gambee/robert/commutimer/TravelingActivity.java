@@ -131,13 +131,13 @@ public class TravelingActivity extends BackConfirmationActivity {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 getApplicationContext());
-        builder.setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle("Commutimer")
-                .setContentText(actionText)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setOnlyAlertOnce(true)
-                .setContentIntent(pendingTapIntent)
-                .setCategory(Notification.CATEGORY_SERVICE);
+        builder.setCategory(Notification.CATEGORY_SERVICE)
+               .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+               .setContentTitle("Commutimer")
+               .setSmallIcon(R.drawable.notification_icon)
+               .setContentText(actionText)
+               .setOnlyAlertOnce(true)
+               .setContentIntent(pendingTapIntent);
         NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
         manager.notify(NOTIFICATION_ID, builder.build());
     }
